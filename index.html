@@ -1,141 +1,1259 @@
-<!DOCTYPE html>
-<html>
-  <head>
-    <title>GIS_project</title>
-    <meta name="viewport" content="initial-scale=1.0, user-scalable=no">
-    <meta charset="utf-8">
-    <style>
-      html, body {
-        height: 100%;
-        margin: 0;
-        padding: 0;
-      }
-      #map {
-        height: 100%;
-      }
-    </style>
-  </head>
-  
-  <body>
-    <h3>Kartta</h3>
+<!doctype html>
+<!--[if lt IE 7 ]> <html class="no-js ie6" lang="en"> <![endif]-->
+<!--[if IE 7 ]>    <html class="no-js ie7" lang="en"> <![endif]-->
+<!--[if IE 8 ]>    <html class="no-js ie8" lang="en"> <![endif]-->
+<!--[if (gte IE 9)|!(IE)]><!--> <html class="no-js" lang="en"> <!--<![endif]-->
+<head>
+	<meta charset="utf-8">
+	<meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+	<title>UniSport</title>
+	<meta name="description" content="UniSport">
+	<meta name="author" content="">
+	<meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+	<link rel="shortcut icon" href="/favicon.ico">
+	<link rel="apple-touch-icon" href="/apple-touch-icon.png">
+
     
-    <div id="map"></div>
-    <script>
-// Note: This example requires that you consent to location sharing when
-// prompted by your browser. If you see the error "The Geolocation service
-// failed.", it means you probably did not give permission for the browser to
-// locate you.
+	<link type="text/css" rel="stylesheet" href="/static/v2011/css/unisport.css.permanentVersion20150907023429">
 
-    function initMap() {
-      var map = new google.maps.Map(document.getElementById('map'), {
-        center: {lat: 24.9375, lng: 60.1708},
-        zoom: 12
-      });
-      var infoWindow = new google.maps.InfoWindow({map: map})
-			
-      // Try HTML5 geolocation.
-      if (navigator.geolocation) {
-        navigator.geolocation.getCurrentPosition(function(position) {
-          var pos = {
-            lat: position.coords.latitude,
-            lng: position.coords.longitude
-          };
+    		<script type="text/javascript" src="/static/v2011/js/unisport.js.permanentVersion20150907023429"></script>
     
-          infoWindow.setPosition(pos);
-          infoWindow.setContent('Olet tässä!');
-          map.setCenter(pos);
-        }, function() {
-          handleLocationError(true, infoWindow, map.getCenter());
-        });
-      } else {
-        // Browser doesn't support Geolocation
-        handleLocationError(false, infoWindow, map.getCenter());
-      }
-    }
-    
-    function handleLocationError(browserHasGeolocation, infoWindow, pos) {
-      infoWindow.setPosition(pos);
-      infoWindow.setContent(browserHasGeolocation ?
-                            'Error: The Geolocation service failed.' :
-                            'Error: Your browser doesn\'t support geolocation.');
-    }
-
-    </script>
-    
-    <script src="https://maps.googleapis.com/maps/api/js?key=AIzaSyDl_p_13lRrhIsR_mk4KoE-jNulaJKwAU4&signed_in=true&callback=initMap"
-        async defer>
-    </script>
-    
-  </body>
-</html>
+    <script type="text/x-jqote-template" id="template_body">
+    <![CDATA[
+	<%= YolTemplate.parse('#template_header') %>
+	<img id="backgroundImage" src="<%= Utils.imageUrl('top_viikki_sulkis_quality85.jpg') %>" alt="" />
+	<div id="backgroundContainer">
+		<div id="pageContainer">
+			<div id="header">
+				<h1 id="logo">
+					<a href="/?page=etusivu">UniSport<span></span></a>
+				</h1>
+				<%= YolTemplate.parse('#template_navigation_top') %>
+			</div>
+			<div id="bannerMessageContainer" style="display: none;"></div>
+			<div class="content"></div>
+			<%= YolTemplate.parse('#template_footer') %>
+		</div>
+	</div>
+	]]>
+</script>
 
 
-<!DOCTYPE html>
-<html lang="en-us">
-  <head>
-    <meta charset="UTF-8">
-    <title>GIS_project</title>
-    <script type='text/javascript' src='http://www.openlayers.org/api/OpenLayers.js'></script>
-  </head>
-  
-  <body>
-    //  <section class="page-header">
-    //   <h1 class="project-name">OpenLayers Map</h1>
-    // </section>
-  
-    <section class="main-content">
-      <div id="map" style="height:400px;width800:px"></div>
-      
-      <script>
-        map = new OpenLayers.Map("map", 
-          {
-	  units:'m',
-	  controls: [new OpenLayers.Control.Navigation()]
-        });
-        OSMmap = new OpenLayers.Layer.OSM();
-        //map.addLayer(OSMmap);
+<script type="text/x-jqote-template" id="template_common_reservableDetails">
+    <![CDATA[
+    <div>
+        <h1> <%= this.name %> </h1>
+        <% if (this.reservationCounter !== false) { %>
+            <%= YolTemplate.parse('#template_common_reservationcounter_short', this) %>
+        <% } %>
+		<div class="description">
+            <span class="info"><%= YolTemplate.parse('#template_common_timePeriod', this) %></span>
+            <span class="info"><%= this.getFacility() %></span>
+            <% if ((this.instructors !== undefined) && (this.instructors.length > 0)) { %>
+                <span class="info"><%= Translations.get(5) %>: <%= YolTemplate.parse('#template_common_instructorList', this) %></span>
+            <% } %>
+            <% if (this.cancellationDescription !== undefined) { %>
+            <p class="cancellationDescription"><%= this.cancellationDescription %></p><br/>
+            <% } %>
+            <% if (this.description !== undefined) { %>
+            <p><%= this.description %></p>
+            <% } %>
+        </div>
+        <div class="prices"></div>
+        <br>
+        <% if ((this.maxReservations > 0) && (this.cancelled == false)) { %>
+            <span id="statusMessage">&nbsp;</span>
+            <br/><br/>
+            <input class="createReservationButton btnPrimary" type="button" class="btn" value="<%= Translations.get(1) %>" data-id="<%= this.id %>" />
+        <% } %>
+        <% if (this.activityPageLink !== false) { %>
+            <br/><br/><br/>
+            <a href="?page=liikumeilla#62<%= this.activityId %>"><%= Translations.get(31, this.activity) %></a>
+        <% } %>
+    </div>
+    ]]>
+</script>
 
-        var wms = new OpenLayers.Layer.WMS("Liikuntapaikat", "http://localhost:8080/geoserver/GIS_project/wms",
-            	{layers: "GIS_project:lipas_kaikki_pisteet",
-            	transparent: true,
-            	format: 'image/png'},
-            	{'opacity': 0.66, 'isBaseLayer': false, projection: 'EPSG:900913'});
-        map.addLayers([OSMmap, wms]);
-        
-        var lat = 60.170833;
-        var lon = 24.9375;
-        var zoom = 14;
-      
-        var markers = new OpenLayers.Layer.Markers( "Markers" );
-        map.addLayer(markers);
-      
-        // Recenter on user position
-        navigator.geolocation.getCurrentPosition(function(position) {
-      	  	document.getElementById('Location').innerHTML= 
-      	  	" Latitude: " + 
-      	  	position.coords.latitude + 
-      	  	" Longitude: " +
-      	  	position.coords.longitude;
-      	
-      	var lonLat = new OpenLayers.LonLat(position.coords.longitude, position.coords.latitude)
-      		.transform(new OpenLayers.Projection("EPSG:4326"), //transform from WGS 1984
-      		map.getProjectionObject()); //to Spherical Mercator Projection
-      		markers.addMarker(new OpenLayers.Marker(lonLat));
-        map.setCenter(lonLat, zoom);
-        });
-      
-        map.addControl(new OpenLayers.Control.LayerSwitcher());
-        map.addControl(new OpenLayers.Control.ScaleLine());
-        map.addControl(new OpenLayers.Control.MousePosition());
-        map.addControl(new OpenLayers.Control.PanZoomBar());
-      </script>
-      
-      <p id="Location"></p>
-      
-      <footer class="site-footer">
-        <h>GIS Software Development course</h>
-      </footer>
 
-    </section>
-  </body>
+<!-- aputemplate reservationcounter_short:lle ja reservationcounter_long:lle -->
+<script type="text/x-jqote-template" id="template_common_reservationcounter">
+    <![CDATA[
+    <% if ((this.reservations < this.maxReservations) || (this.reservePlaces === undefined)) { %>
+        <span class='reservationCounter' data-id="<%= this.id %>"><%= this.reservations %></span>/<%= this.maxReservations %>
+    <% } else { %>
+        <%= this.maxReservations %>/<%= this.maxReservations %><%= Utils.coalesce(this.reservePlacePrefix, '&nbsp;(') %><span class='reservationCounter' data-id="<%= this.id %>"><%= (this.reservations - this.maxReservations) %></span>/<%= this.reservePlaces %><%= Utils.coalesce(this.reservePlaceSuffix,')') %>
+    <% } %>
+	]]>
+</script>
+
+
+
+<script type="text/x-jqote-template" id="template_common_reservationcounter_short">
+    <![CDATA[
+	<div class="attendance">
+	    <%= YolTemplate.parse('#template_common_reservationcounter', this) %>
+	</div>
+	]]>
+</script>
+
+
+<!-- TODO: tata ei tarvita enaa? -->
+<script type="text/x-jqote-template" id="template_common_reservationcounter_long">
+    <![CDATA[
+    <%= YolTemplate.parse('#template_common_reservationcounter', $.extend({'reservePlacePrefix': '&nbsp;varasijat&nbsp;', 'reservePlaceSuffix': ''}, this)) %>
+	]]>
+</script>
+
+
+<script type="text/x-jqote-template" id="template_common_timePeriod">
+    <![CDATA[
+    <% if (Utils.isSameDay(this.startTime, this.endTime)) { %>
+        <% if (this.onlyDays === true) { %>
+            <%= this.startTime.toString('d.M.') %>
+        <% } else { %>
+            <%= Utils.nonbreakingSpaces(this.startTime.toString('ddd d.M.') + ' ' + Translations.get(139) + ' '+ this.startTime.toString('H:mm')) %>&nbsp;-&nbsp;<%= this.endTime.toString("H:mm") %>
+        <% } %>
+    <% } else { %>
+        <%= this.startTime.toString('d.M.') %>&nbsp;-&nbsp;<%= this.endTime.toString("d.M.") %>
+    <% } %>
+	]]>
+</script>
+
+
+<script type="text/x-jqote-template" id="template_common_notification">
+    <![CDATA[
+     <% if (this.notification !== undefined) { %>
+        <h1><%= this.notification.message %></h1>  <!-- TODO parempi ulkoasu -->
+        <p>&nbsp;</p>
+    <% } %>
+	]]>
+</script>
+
+
+<script type="text/x-jqote-template" id="template_common_campusSelectionItem">
+    <li>
+        <input id="campusSelectionItem_<%= this.campus.id %>" type="checkbox" />
+        <label for="campusSelectionItem_<%= this.campus.id %>"><%= this.campus.name %></label>
+    </li>
+</script>
+
+
+<script type="text/x-jqote-template" id="template_common_weekdaySelectionItem">
+    <li>
+        <input id="weekdaySelectionItem_<%= this.id %>" type="checkbox" />
+        <label for="weekdaySelectionItem_<%= this.id %>"><%= this.name %></label>
+    </li>
+</script>
+
+
+<script type="text/x-jqote-template" id="template_common_bannerMessage">
+    <![CDATA[
+    <div class="banner" data-descriptor="<%= this.descriptor %>">
+        <img src="/static/img/banner_close.png" class="closeButton"/>
+        <span class="header"><%= this.header %></span><br/>
+        <span class="text"><%= this.text %></span>
+    </div>
+    ]]>
+</script>
+
+<script type="text/x-jqote-template" id="template_common_instructorList">
+    <![CDATA[
+    <% if (this.instructors.length > 0 && typeof this.instructors[0] == 'string') { %>
+       <!-- TODO FALLBACK: remove after August 2014 deplyoment -->
+       <%= this.instructors.join(', ') %>
+    <% } else { %>
+        <% if (this.disableInstructorLinking === true) { %>
+            <%= _.map(this.instructors, function(instructor) { return _.without([instructor.firstName, instructor.lastName], undefined).join(' '); }).join(', ') %>
+        <% } else { %>
+            <%= _.map(this.instructors, function(instructor) { return '<a class="instructor" href="/?page=instructor&id=' + instructor.id + '">' + _.without([instructor.firstName, instructor.lastName], undefined).join(' ') + '</a>'; }).join(', ') %>
+        <% } %>
+    <% } %>
+    ]]>
+</script>
+
+
+
+<script type="text/x-jqote-template" id="template_common_choicePopup">
+    <![CDATA[
+    <div id="choicePopup" class="popup">
+        <a class="btn_close"><span>Close</span></a>
+        <p><%= this.message %></p>
+        <% for (var i = 0; i < this.buttons.length; i++) { %>
+            <input type="button" data-itemkey="<%= this.buttons[i].itemKey %>" class="btn btn_close" value="<%= this.buttons[i].text %>">
+        <% } %>
+    </div>
+    ]]>
+</script>    <script type="text/x-jqote-template" id="template_kalenteri">
+    <![CDATA[
+	<table class="kalenteri">
+        <tr>
+            <th class="timeColumn"><%= this.date.toString('ddd d.M.') %>&nbsp;</th>
+            <% for (var i=0; i<this.columns.length; i++) { %>
+                <th class="column campus_column_<%= this.columns[i].id %>">
+                    <%= Utils.capitalize(this.columns[i].name) %>
+                </th>
+            <% } %>
+        </tr>
+
+	    <tr class="empty">
+	        <td colspan="6">
+	        </td>
+	    </tr>
+		<tr>
+			<td class="time">
+				<ol>
+					<li data-hour="6" style="height: <%= (this.hourHeight - 1) %>px">6-7</li>
+					<li data-hour="7" style="height: <%= (this.hourHeight - 1) %>px">7-8</li>
+					<li data-hour="8" style="height: <%= (this.hourHeight - 1) %>px">8-9</li>
+					<li data-hour="9" style="height: <%= (this.hourHeight - 1) %>px">9-10</li>
+					<li data-hour="10" style="height: <%= (this.hourHeight - 1) %>px">10-11</li>
+					<li data-hour="11" style="height: <%= (this.hourHeight - 1) %>px">11-12</li>
+					<li data-hour="12" style="height: <%= (this.hourHeight - 1) %>px">12-13</li>
+					<li data-hour="13" style="height: <%= (this.hourHeight - 1) %>px">13-14</li>
+					<li data-hour="14" style="height: <%= (this.hourHeight - 1) %>px">14-15</li>
+					<li data-hour="15" style="height: <%= (this.hourHeight - 1) %>px">15-16</li>
+					<li data-hour="16" style="height: <%= (this.hourHeight - 1) %>px">16-17</li>
+					<li data-hour="17" style="height: <%= (this.hourHeight - 1) %>px">17-18</li>
+					<li data-hour="18" style="height: <%= (this.hourHeight - 1) %>px">18-19</li>
+					<li data-hour="19" style="height: <%= (this.hourHeight - 1) %>px">19-20</li>
+					<li data-hour="20" style="height: <%= (this.hourHeight - 1) %>px">20-21</li>
+					<li data-hour="21" style="height: <%= (this.hourHeight - 1) %>px">21-22</li>
+                    <li data-hour="22" style="height: <%= (this.hourHeight - 1) %>px">22-23</li>
+				</ol>
+			</td>
+            <% for (var i=0; i<this.columns.length; i++) { %>
+                <td class="column campus_column_<%= this.columns[i].id %>" data-id="<%= this.columns[i].id %>">
+                    <div class="column reservableContainer"></div>
+                </td>
+            <% } %>
+		</tr>
+	</table>
+	]]>
+</script>
+
+
+<script type="text/x-jqote-template" id="template_kalenteri_eventcell">
+    <![CDATA[
+	<div data-reservable="<%= this.id %>" class="eventCell <%= ((this.reservations >= this.maxReservations) && (this.maxReservations>0)) ? "fullBooked" : "" %> width_<%= this.elementWidth %> position_<%= this.eventPosition %>" id="event_<%= this.id %>" style="top:<%= ((this.startTime.toString("HH") - 6) * this.hourHeight) + (this.startTime.toString("mm") * this.hourHeight / this.hourHeight) %>px; height: <%= ((this.endTime.getTime() - this.startTime.getTime()) / (3600000 / this.hourHeight)) %>px;">
+		<div class="padder open_kalenteri_details" data-id="<%= this.id %>">
+            <%= YolTemplate.parse('#' + this.cellContentTemplate, this) %>
+		</div>
+	</div>
+	]]>
+</script>
+
+
+<script type="text/x-jqote-template" id="template_dayCalendar_container">
+    <![CDATA[
+    <div class="dayCalendar"></div>
+	]]>
+</script>
+
+
+<script type="text/x-jqote-template" id="template_weekCalendar_container">
+    <![CDATA[
+	<div class="weekPicker">
+		<a class="activatePreviousWeek" href="#"><%= Translations.get(167) %></a>
+		<a class="activateNextWeek" href="#"><%= Translations.get(168) %></a>
+	</div>
+	<div class="weekCalendar"></div>
+	<div class="weekPicker">
+		<a class="activatePreviousWeek" href="#"><%= Translations.get(167) %></a>
+		<a class="activateNextWeek" href="#"><%= Translations.get(168) %></a>
+	</div>
+	]]>
+</script>
+
+
+<script type="text/x-jqote-template" id="template_weekCalendar_day">
+    <![CDATA[
+	<% if (this.events.length > 0) { %>
+		<tr class="weekCalendarHeaderRow">
+			<th><%= Utils.capitalize(this.events[0].startTime.toString('ddd d.M.')) %></th>
+			<th><%= Translations.get(149) %></th>
+			<th><%= Translations.get(17) %></th>
+			<% if (this.showInstructor) { %>
+				<th><%= Translations.get(5) %></th>
+			<% } %>
+			<th>
+			<%= Translations.get(13) %>
+			</th>
+			<% if (this.showDetailsLink) { %>
+				<th>&nbsp;</th>
+			<% } %>
+		</tr>
+		<% for (var i = 0; i < this.events.length; i++) { %>
+			<tr data-reservable="<%= this.events[i].id %>" data-campus="<%= Utils.findById(this.events[i].campus, YolCampus.allInstances(), 'name').id %>" class="weekCalendarItemRow">
+				<td><%= this.events[i].startTime.toString('HH:mm') %>&nbsp;-&nbsp;<%= this.events[i].endTime.toString("HH:mm") %></td>
+				<td>
+					<% if (this.entity === 'groupEvent') { %>
+						<%= this.events[i].name %>
+					<% } else { %>
+						<%= this.events[i].activity %>
+					<% } %>
+				</td>
+				<td><%= this.events[i].campus %></td>
+				<% if (this.showInstructor) { %>
+					<td><%= YolTemplate.parse('#template_common_instructorList', this.events[i]) %></td>
+				<% } %>
+				<td><%= YolTemplate.parse('#template_common_reservationcounter_short', this.events[i]) %></td>
+				<% if (this.showDetailsLink) { %>
+					<td><a class="showDetailsButton" data-id="<%= this.events[i].id %>"><%= Translations.get(15) %></a></td>
+				<% } %>
+			</tr>
+		<% } %>
+	<% } %>
+    ]]>
+</script>
+
+
+<script type="text/x-jqote-template" id="template_groupEventCalendar_gymOpenAndInstructions">
+    <tr class="additionalHeaderRow">
+        <td class="timeColumn">
+			<%= Translations.get(30) %><br/>
+			<% if (this.hasInstructions()) { %>
+				<%= Translations.get(158) %>
+			<% } %>
+		</td>
+        <% for (var i=0; i<this.campuses.length; i++) { %>
+            <td class="column campus_column_<%= this.campuses[i].id %>">
+                <% if (this.campuses[i].open !== undefined) { %>
+                    <span class="gymTimesOpen">
+                    <%= this.campuses[i].open.startTime %>-<%= this.campuses[i].open.endTime %>
+                    </span><br />
+                <% } %>
+                <% if ((this.campuses[i].instructions !== undefined) && (this.campuses[i].instructions.length > 0)) { %>
+                    <% for (var j=0; j<this.campuses[i].instructions.length; j++) { %>
+                        <a href="?page=liikumeilla#62826394" class="gymTimesLink"><span class="gymTimesInfo"><%= this.campuses[i].instructions[j].startTime %>-<%= this.campuses[i].instructions[j].endTime %></span></a>
+                    <% } %>
+                <% } %>
+            </td>
+        <% } %>
+    </tr>
+</script>
+
+
+<script type="text/x-jqote-template" id="template_eventCalendar_cellContent">
+    <![CDATA[
+    <span class="eventName">
+		<% if (this.entity === 'groupEvent') { %>
+			<%= this.name %>
+		<% } else { %>
+			<%= this.activity %>
+		<% } %>
+	</span>
+    <span class="attendance">
+    </span>
+	<span class="instructor"><%= YolTemplate.parse('#template_common_instructorList', $.extend({'disableInstructorLinking': true}, this)) %></span>
+    <span class="venue"><%= this.venue %></span>
+	]]>
+</script>
+
+
+<script type="text/x-jqote-template" id="template_roomCalendar_cellContent">
+    <![CDATA[
+    <span class="eventName"><%= this.activity %></span>
+    <span class="attendance">
+        <%= YolTemplate.parse('#template_common_reservationcounter_short', this) %>
+    </span>
+    <span class="venue"><%= this.rooms.join(', ') %></span>
+	]]>
+</script>    <script type="text/x-jqote-template" id="template_etusivu_container">
+	<![CDATA[
+	<div class="narrowColumn">
+		<h3 id="frontPageRaiseHeader"></h3>
+		<div id="frontPageRaiseContent"></div>
+	</div>
+
+	<div class="wideColumn">
+		<div id="frontpage_main_container">
+			<h3 id="frontPageMainHeader"></h3>
+			<p id="frontPageMainContent"></p>
+		</div>
+		<p>&nbsp;</p>
+		<h3><%= Translations.get(73) %> <a href="http://unisport.fi/rss"><img src="<%= Utils.imageUrl('RSS_logo.png') %>" /></a></h3>
+		<div class="raise" id="frontPageNewsItems_INFORMATION">
+		</div>
+	</div>
+
+	<div class="narrowColumn">
+		<h3><%= Translations.get(74) %></h3>
+		<div href="#" class="raise" id="frontPageNewsItems_CURRENT">
+		</div>
+		<h3><%= Translations.get(75) %></h3>
+		<div class="raise" id="cancelledEvents">
+			<p>
+			<%= Translations.get(76) %>
+			</p>
+		</div>
+		<h3><%= Translations.get(16) %></h3>
+		<div class="raise" id="gymWeek">
+			<p class="gymWeekHeader"></p>
+            <div class="activeWeek"></div>
+            <p class="navigationLinks">
+                <a href="#" class="activatePreviousWeek"><%= Translations.get(179) %></a>
+                <a href="#" class="activateNextWeek"><%= Translations.get(180) %></a>
+            </p>
+		</div>
+	</div>
+	]]>
+</script>
+
+
+<script type="text/x-jqote-template" id="template_etusivu_newsitem">
+	<![CDATA[
+    <p><a href="?page=news&id=<%= this.id %>"><%= this.header %></a></p>
+	]]>
+</script>
+
+
+<script type="text/x-jqote-template" id="template_etusivu_cancelledEvents">
+	<![CDATA[
+	<% for (var i = 0; i < this.campuses.length; i++) { %>
+    <p><strong><a href="?page=yleista#65<%= this.campuses[i].id %>"><%= this.campuses[i].name %></a></strong>:<br/>
+		<% for (var j = 0; j < this.campuses[i].events.length; j++) { %>
+			<a class="cancelledEvent" data-id="<%= this.campuses[i].events[j].id %>" href="#"><%= this.campuses[i].events[j].activity %> <%= this.campuses[i].events[j].startTime.toString('d.M.') %></a><br/>
+		<% } %>
+	</p>
+	<% } %>
+	]]>
+</script>
+
+
+<script type="text/x-jqote-template" id="template_etusivu_gymWeekItem">
+	<![CDATA[
+   	<p class="gymWeekItem"><strong><a href="?page=yleista#65<%= this.campus.id %>"><%= this.campus.name %></a></strong>:<br/> <%= this.description %></p>
+	]]>
+</script>
+    <script type="text/x-jqote-template" id="template_course_table">
+    <![CDATA[
+    <table id="courses">
+        <tr>
+            <% if (this.showCategory !== false) { %>
+                <th class="col_category">Kategoria</th>
+            <% } %>
+            <th class="col_kurssi"><%= Translations.get(9) %></th>
+            <th class="col_ajankohta"><%= Translations.get(12) %></th>
+            <th class="col_ohjaaja"><%= Translations.get(5) %></th>
+            <th class="col_kampus"><%= Translations.get(138) %></th>
+            <th class="col_ilmoittaudu"></th>
+        </tr>
+    </table>
+	]]>
+</script>
+
+
+
+<script type="text/x-jqote-template" id="template_kurssit_activity">
+    <![CDATA[
+    <tr class="course_row">
+        <% if (this.showCategory !== false) { %>
+            <td class="col_category"><span><%= this.category.name %></span></td>
+        <% } %>
+        <td class="col_kurssi">
+            <%= this.name %>
+        </td>
+        <td class="col_ajankohta">
+            <%= this.weekday('&nbsp;') + $.trim(YolTemplate.parse('#template_common_timePeriod', $.extend({'onlyDays': true}, this))) %>
+        </td>
+        <td class="col_ohjaaja">
+            <%= YolTemplate.parse('#template_common_instructorList', this) %>
+        </td>
+		<td class="col_kampus">
+		 	<%= this.campuses.join(', ') %>
+		</td>
+        <td class="col_ilmoittaudu">
+            <a class="showDetailsButton" data-id="<%= this.id %>"><%= Translations.get(15) %></a>
+        </td>
+    </tr>
+	]]>
+</script>
+
+
+
+<script type="text/x-jqote-template" id="template_course_additionalDetails">
+    <![CDATA[
+    <div>
+        <strong><%= Translations.get(94) %>:</strong><br /><br />
+        <% for (var i=0; i<this.events.length; i++) { %>
+            <%= YolTemplate.parse('#template_common_timePeriod', this.events[i]) %><br />
+        <% } %>
+        <br/>
+        <strong><%= Translations.get(14) %>:</strong> <%= this.reservationPeriod.toString() %><br />
+		<br />
+    </div>
+	]]>
+</script>    <script type="text/x-jqote-template" id="template_cms_container">
+<![CDATA[
+	<div class="narrowColumn cmsNavigation">
+		<%= YolTemplate.parse('#template_cms_navigation', this.navigation) %>
+	</div>
+	<div class="wideColumn">
+		<h3 id="cmsHeader"></h3>
+		<p id="cmsContent"></p>
+		<p>&nbsp;</p>
+		<p id="cmsFooter"></p>
+	</div>
+]]>
+</script>
+
+
+<script type="text/x-jqote-template" id="template_cms_campus">
+<![CDATA[
+    <div>
+		<% if (this.gymWeekDescription !== undefined) { %>
+			<div class="raise" id="gymWeek"><p style="display: block; ">
+                <strong><%= Translations.get(30) %></strong><br/><br/>
+                <%= Translations.get(71) %>:<br/><br/>
+                <%= this.gymWeekDescription %>
+            </div>
+		<% } %>
+		<br/>
+		<br/>
+		<% for (var i = 0; i < this.venues.length; i++) { %>
+			<br/>
+			<strong class="venueHeader">
+				<%= this.venues[i].header %>
+			</strong>
+			<br/>
+			<br/>
+			<p class="venueDescription">
+				<%= this.venues[i].content %>
+			</p>
+		<% } %>
+    </div>
+]]>
+</script>
+
+
+<script type="text/x-jqote-template" id="template_cms_futureEvents">
+    <![CDATA[
+	<div class="cmsFutureEvents">
+	    <div class="searchTools">
+	        <%= Translations.get(this.headerMessageKeyId, this.headerActivity, this.dayCount) %>:
+	    </div>
+
+	    <table class="results">
+	        <% for (var i = 0; i < this.days.length; i++) { %>
+	            <tr class="futureEventHeaderRow">
+	                <th><%= Utils.capitalize(this.days[i].events[0].startTime.toString('ddd d.M.')) %></th>
+                    <% if (this.showActivityName) { %>
+	                    <th><%= Translations.get(11) %></th>
+                    <% } %>
+	                <th><%= Translations.get(17) %></th>
+					<% if (this.activities !== undefined && this.activities.length > 1) { %>
+						<th><%= Translations.get(11) %></th>
+					<% } %>
+					<% if (this.showInstructor) { %>
+						<th><%= Translations.get(5) %></th>
+					<% } %>
+                    <% if (this.reservable) { %>
+						<th><%= Translations.get(13) %></th>
+						<th>&nbsp;</th>
+                    <% } %>
+	            </tr>
+	            <% for (var j = 0; j < this.days[i].events.length; j++) { %>
+	            <tr class="futureEventItemRow">
+	                <td><%= this.days[i].events[j].startTime.toString('HH:mm') %>&nbsp;-&nbsp;<%= this.days[i].events[j].endTime.toString("HH:mm") %></td>
+                    <% if (this.showActivityName) { %>
+                        <td><%= this.days[i].events[j].activity %></td>
+                    <% } %>
+					<% if (this.placeDetails) { %>
+	                	<td><%= this.days[i].events[j].getFacility() %></td>
+					<% } else { %>
+						<td><%= this.days[i].events[j].campus %></td>
+					<% } %>
+					<% if (this.activities !== undefined && this.activities.length > 1) { %>
+						<td><%= this.days[i].events[j].activity %></td>
+					<% } %>
+                    <% if (this.showInstructor) { %>
+                    	<td><%= YolTemplate.parse('#template_common_instructorList', this.days[i].events[j]) %></td>
+					<% } %>
+					<% if (this.reservable) { %>
+                    	<td><%= YolTemplate.parse('#template_common_reservationcounter_short', this.days[i].events[j]) %></td>
+                    	<td><a class="showDetailsButton" data-id="<%= this.days[i].events[j].id %>"><%= Translations.get(15) %></a></td>
+                    <% } %>
+	            </tr>
+	            <% } %>
+	        <% } %>
+	    </table>
+	</div>
+    ]]>	
+</script>
+
+
+<script type="text/x-jqote-template" id="template_cms_futureEvents_empty">
+    <![CDATA[
+    <div class="searchTools">
+		<%= Translations.get(this.headerMessageKeyId, this.headerActivity, this.dayCount) %>:
+    </div>
+    <br />
+    <p><%= Translations.get(62) %></p>
+    ]]>
+ </script>
+
+
+<script type="text/x-jqote-template" id="template_cms_futureCourses_empty">
+    <![CDATA[
+    <br />
+	<br />
+    <p><%= Translations.get(62) %></p>
+    ]]>
+ </script>
+
+
+<script type="text/x-jqote-template" id="template_cms_navigation">
+<![CDATA[
+<h3><a data-id="<%= this.id %>" data-type="<%= this.type %>"></a></h3>
+<div id="">
+    <% if (this.categories !== undefined) { %>
+	<ul class="secondNavSimple collapsingNavi" >
+    <% for (var i = 0; i < this.categories.length; i++) { %>
+		<li id="page_id_<%= this.categories[i].type %><%= this.categories[i].id %>" class="mainCategory <%= (this.categories[i].categories !== undefined) ? 'hasChildren' : '' %>">
+	     <a class="title" data-id="<%= this.categories[i].id %>" data-type="<%= this.categories[i].type %>"><%= this.categories[i].header %></a>
+	        <% if ((this.categories[i].categories !== undefined)) { %>
+					<ul>				
+			    		<% for (var j = 0; j < this.categories[i].categories.length; j++) { %>
+				            <li id="page_id_<%= this.categories[i].categories[j].type %><%= this.categories[i].categories[j].id %>" class="<%= (this.categories[i].categories[j].categories !== undefined) ? 'hasChildren' : '' %>" style="display:none;"><a data-id="<%= this.categories[i].categories[j].id %>" data-type="<%= this.categories[i].categories[j].type %>"><%= this.categories[i].categories[j].header %></a>
+								<% if (this.categories[i].categories[j].categories !== undefined) { %>
+								<ul>
+									<% for (var k = 0; k < this.categories[i].categories[j].categories.length; k++) { %>
+							            <li id="page_id_<%= this.categories[i].categories[j].categories[k].type %><%= this.categories[i].categories[j].categories[k].id %>" style="display:none;" ><a data-id="<%= this.categories[i].categories[j].categories[k].id %>" data-type="<%= this.categories[i].categories[j].categories[k].type %>"><%= this.categories[i].categories[j].categories[k].header %></a></li>
+									<% } %>
+								</ul>
+								<% } %>
+							</li>
+						<% } %>
+					</ul>
+	        <% } %>
+	        <% if ((this.categories[i].pages !== undefined)) { %>
+		        <ul>
+		            <% for (var j = 0; j < this.categories[i].pages.length; j++) { %>
+		            <li style="display:none;"><a href="#" data-id="<%= this.categories[i].pages[j].id %>" data-type="<%= this.categories[i].pages[j].type %>"></a></li>
+		            <% } %>
+		        </ul>
+	        <% } %>
+		</li>
+
+    <% } %>
+    </ul>
+    <% } %>
+</div>
+]]>
+</script>
+
+
+<script type="text/x-jqote-template" id="template_cms_activityList">
+    <![CDATA[
+		<div class="activityList">
+		<% for (var i = 0; i < this.activities.length; i++) { %>
+			<a href="?page=liikumeilla#<%= Permalink.CMS_ITEM_TYPE_PREFIXES.sport + '' + this.activities[i].id %>"><%= Utils.nonbreakingSpaces(this.activities[i].searchTermHeader()) %></a> <span> </span>
+		<% } %>
+		</div>
+	]]>
+</script>
+    <script type="text/x-jqote-template" id="template_news_container">
+<![CDATA[
+	<div class="narrowColumn">
+	</div>
+	<div class="wideColumn">
+		<h3 id="newsHeader"></h3>
+		<p id="newsContent"></p>
+        <p id="shareButtons"></p>
+	</div>
+]]>
+</script>    <script type="text/x-jqote-template" id="template_payment_container">
+    <![CDATA[
+	<div class="narrowColumn">
+	</div>
+	<div class="wideColumn">
+		<div class="payment">
+			<h3><%= Translations.get(130) %></h4>
+			<p><%= this.description %></p>
+			<div id="choose_bank">
+				<p>
+					<strong><%= Translations.get(131) %></strong>
+					<br />
+					<br />
+					<strong><%= Translations.get(132) %></strong> <%= Translations.get(133) %>
+				</p>
+				<br /><br />
+				<a class="bankLink" data-type="pohjola" href="#"><img src="<%= Utils.imageUrl('pankki_pohjola.png') %>" /></a>
+				<a class="bankLink" data-type="nordea" href="#"><img src="<%= Utils.imageUrl('pankki_nordea.png') %>" /></a>
+				<a class="bankLink" data-type="danskebank" href="#"><img src="<%= Utils.imageUrl('pankki_danskebank.png') %>" /></a>
+                <br/><br/>
+				<a class="bankLink" data-type="aktia" href="#"><img src="<%= Utils.imageUrl('pankki_aktia.png') %>" /></a>
+				<a class="bankLink" data-type="handelsbanken" href="#"><img src="<%= Utils.imageUrl('pankki_handelsbanken.png') %>" /></a>
+                <a class="bankLink" data-type="nooa" href="#"><img src="<%= Utils.imageUrl('pankki_nooa.png') %>" /></a>
+                <br/><br/>
+                <a class="bankLink" data-type="pop" href="#"><img src="<%= Utils.imageUrl('pankki_pop.png') %>" /></a>
+                <a class="bankLink" data-type="spankki" href="#"><img src="<%= Utils.imageUrl('pankki_spankki.png') %>" /></a>
+                <a class="bankLink" data-type="lahitapiola" href="#"><img src="<%= Utils.imageUrl('pankki_lahitapiola.png') %>" /></a>
+			</div>
+		</div>
+	</div>
+	]]>
+</script>    <script type="text/x-jqote-template" id="template_omattiedot_reservations">
+	<![CDATA[
+    <%=YolTemplate.parse('#template_common_notification', this) %>
+	<div id="userinfo_reservations_card" style="margin-bottom: 40px;">
+		<div id="userReservations">
+		</div>
+		<h3><%= Translations.get(13) %></h3>
+
+        <% if (this.reservations.length > 0) { %>
+        <table class="results">
+            <tr>
+                <th class="nimi"><%= Translations.get(149) %></th>
+                <th class="aika"><%= Translations.get(12) %></th>
+				<th><%= Translations.get(17) %></th>
+                <th class="hinta"><%= Translations.get(2) %></th>
+                <th class="status"><%= Translations.get(20) %></th>
+                <th class="action"></th>
+            </tr>
+            <% for (i=0; i<this.reservations.length; i++) { %>
+                <tr class="reservation <% if (this.reservations[i].blocker) { %> blocker <% } %> status-<%= this.reservations[i].status %>">
+                    <td class="nimi"><a href="#" class="showReservableDetails" data-id="<%= this.reservations[i].reservableId %>"><%= this.reservations[i].name %></a></td>
+                    <td class="aika"><%= YolTemplate.parse('#template_common_timePeriod', this.reservations[i]) %></td>
+					<td><%= Utils.coalesce(this.reservations[i].venue, '') %></td>
+                    <td class="hinta"><%= Utils.formatCurrency(this.reservations[i].price) %></td>
+                    <td class="status"><%= this.reservations[i].getStatusDescription() %></td>
+                    <td class="action">
+                        <% if (this.reservations[i].isCancellable()) { %>
+                            <input type="button" class="btn btn_userinfo_cancelReservation" value="<%= Translations.get(22) %>" data-id="<%= this.reservations[i].reservationId %>" />
+                        <% } %>
+                        <% if (this.reservations[i].isPayable()) { %>
+                            <input type="button" class="btn btn_userinfo_payReservation" value="<%= Translations.get(21) %>" data-id="<%= this.reservations[i].reservationId %>" />
+                        <% } %>
+                    </td>
+                </tr>
+            <% } %>
+        </table>
+        <% } else { %>
+           <p><%= Translations.get(121) %></p>
+        <% } %>
+	</div>
+	]]>
+</script>
+
+
+<script type="text/x-jqote-template" id="template_omattiedot_info">
+    <![CDATA[
+	<div id="userinfo">
+		<h3><%= Translations.get(108) %></h3>
+		<dl class="dl_rows">
+			<dt><%= Translations.get(109) %></dt>
+			<dd><%= this.firstName %></dd>
+			<dt><%= Translations.get(110) %></dt>
+			<dd><%= this.lastName %></dd>
+			<dt><%= Translations.get(111) %></dt>
+			<dd><%= this.birthDate.toString('d.M.yyyy') %></dd>
+            <% if (this.getShortUserName() !== '') { %>
+    			<dt><%= Translations.get(97) %></dt>
+			    <dd id="userName"><%= this.getShortUserName() %></dd>
+		    <% } %>
+            <dt><%= Translations.get(114) %></dt>
+			<dd>
+                <%= this.customerGroup.name %>
+                <% if (this.customerGroup.expirationDate !== undefined) { %>
+                    (<%= Translations.get(172, Date.parseExact(this.customerGroup.expirationDate, 'yyyy-MM-dd').toString('d.M.yyyy')) %>)
+                <% } %>
+            </dd>
+			<dt><%= Translations.get(112) %></dt>
+			<dd id="editable_phoneNumber"><%= this.phoneNumber %></dd>
+            <% if (!Utils.isBlank(this.email)) { %>
+			    <dt><%= Translations.get(113) %></dt>
+			    <dd id="editable_email"><%= this.email %></dd>
+            <% } %>
+			<dt><%= Translations.get(115) %></dt>
+            <dd id="editable_language"><%= this.languageTranslation(this.language) %></dd>
+            <dt><%= Translations.get(256) %></dt>
+            <dd id="editable_marketingAllowed"><%= Translations.getBooleanDescription(this.marketingAllowed) %></dd>
+		</dl>
+        <p><%= Translations.get(264) %></p><br/>
+		<input type="button" class="btn" id="btn_userinfo_edit" value="<%= Translations.get(147) %>" /><br/>
+        <input type="button" class="btn" id="btn_changePassword" value="<%= Translations.get(204) %>" /><br/>
+        <div id="changePasswordInput"/>
+	</div>
+	]]>
+</script>
+
+
+<script type="text/x-jqote-template" id="template_omattiedot_kausikortti">
+	<![CDATA[
+	<%=YolTemplate.parse('#template_common_notification', this) %>
+    <div id="userinfo_kausikortti">
+		<h3><%= Translations.get(19) %></h3>
+		<div id="membershipList"></div>
+		<div id="membershipPurchase"></div>
+	</div>
+	]]>
+</script>
+
+
+
+<script type="text/x-jqote-template" id="template_omattiedot_kausikortti_membershipList">
+	<![CDATA[
+	<table class="results">
+		<tr>
+			<th><%= Translations.get(116) %></th>
+            <th>&nbsp;</th>
+            <th>&nbsp;</th>
+		</tr>
+		<% for ( i=0; i < this.memberships.length; i++) { %>
+			<tr class="membership" data-id="<%= this.memberships[i].id %>">
+				<td class="period">
+					<%= this.memberships[i].startDate.toString('d.M.yyyy') %> - <%= this.memberships[i].endDate.toString('d.M.yyyy') %>
+                </td>
+                <td class="description">
+                    <%= Membership.getDescription(this.memberships[i].durationMonthCount, this.memberships[i].halfDay) %>
+                </td>
+                <td class="freezes">
+					<% if (this.memberships[i].freezes.length > 0) { %>
+						<%= Translations.get(56) %>&nbsp;
+						<%= this.memberships[i].freezes.join(', ') %>
+					<% } %>
+				</td>
+			</tr>
+		<% } %>
+	</table>
+	]]>
+</script>
+
+
+<script type="text/x-jqote-template" id="template_omattiedot_kausikortti_purchase_error">
+	<![CDATA[
+	]]>
+</script>
+
+
+
+<script type="text/x-jqote-template" id="template_omattiedot_historia">
+	<![CDATA[
+	<h3><%= Translations.get(173) %></h3>
+	<select class="monthSelection"></select>
+	<div class="registrationList"></div>
+	]]>
+</script>
+
+
+
+<script type="text/x-jqote-template" id="template_omattiedot_historia_kuukausi">
+	<![CDATA[
+	<table class="results">
+		<tr>
+			<th class="paiva"><%= Translations.get(161) %></th>
+			<th class="nimi"><%= Translations.get(149) %></th>
+		</tr>
+		<% for (i=0; i<this.registrations.length; i++) { %>
+			<tr>
+				<td class="aika"><%= this.registrations[i].date.toString('ddd d.M.') %></td>
+				<td class="nimi">
+					<% if (this.registrations[i].reservableId !== undefined) { %>
+						<a href="#" class="showReservableDetails" data-id="<%= this.registrations[i].reservableId %>"><%= this.registrations[i].name %></a>
+					<% } else { %>
+						<%= this.registrations[i].name %>
+					<% } %>
+				</td>
+			</tr>
+		<% } %>
+	</table>
+	]]>
+</script>
+
+
+
+<script type="text/x-jqote-template" id="template_omattiedot_paikkavahti">
+    <![CDATA[
+    <h3><%= Translations.get(174) %></h3>
+    <div id="cancelWatchEditor"/>
+    <div id="activeCancelWatch">
+        <p class="currentStatus"><%= Translations.get(235) %>:</p>
+        <ul id="descriptionList"/>
+        <p/>
+        <input type="button" class="btn editButton" value="<%= Translations.get(147) %>" />
+        <input type="button" class="btn removeButton" value="<%= Translations.get(234) %>" />
+    </div>
+    ]]>
+</script>
+
+
+
+<script type="text/x-jqote-template" id="template_omattiedot_paikkavahti_editor">
+    <p class="description"><%= Translations.get(228) %></p>
+    <p class="description"><%= Translations.get(227) %></p>
+    <div class="field"><p class="label"><%= Translations.get(11) %>: <span class="requiredFieldNotion">*</span></p> <select id='sportSelection'/></div>
+    <div class="field"><p class="label"><%= Translations.get(138) %>: <span class="requiredFieldNotion">*</span></p> <ul id='campusSelection'/></div>
+    <div class="field"><p class="label"><%= Translations.get(229) %>: <span class="requiredFieldNotion">*</span></p>
+        <ul id='weekdaySelection'>
+            <%= YolTemplate.parse('#template_common_weekdaySelectionItem', [{'id': 1, 'name': 'Maanantai'}, {'id': 2, 'name': 'Tiistai'}, {'id': 3, 'name': 'Keskiviikko'}, {'id': 4, 'name': 'Torstai'}, {'id': 5, 'name': 'Perjantai'}, {'id': 6, 'name': 'Lauantai'}, {'id': 7, 'name': 'Sunnuntai'}]) %>
+        </ul>
+    </div>
+    <div class="field"><p class="label">
+        <%= Translations.get(230) %>:</p><%= Utils.capitalize(Translations.get(231)) %> <select id='minStartTime'/>
+        <%= Translations.get(232) %> <select id='maxStartTime'/><br/>
+    </div>
+    <div class="field"><p class="label"><%= Translations.get(5) %>:</p> <select id='instructorSelection'/></div>
+    <input type="button" class="btn submitButton" value="" />
+    <div class="spinnerContainer"/>
+    ]]>
+</script>
+
+
+<script type="text/x-jqote-template" id="template_omattiedot_paikkavahti_popup">
+    <![CDATA[
+    <div id="cancelWatchCreatedPopup" class="popup">
+        <a class="btn_close"><span>Close</span></a>
+        <h1><%= Translations.get(235) %></h1>
+        <br/>
+        <p><%= Translations.get(237, '<span class="email">' + this.email + '</span>') %></p>
+        <p><%= Translations.get(238) %></p>
+        <input type="button" class="btn btn_close" value="<%= Translations.get(4) %>">
+    </div>
+    ]]>
+</script>
+
+
+
+<script type="text/x-jqote-template" id="template_omattiedot_paikkavahti_validationError">
+    <![CDATA[
+    <div id="cancelWatchValidationError" class="popup">
+        <a class="btn_close"><span>Close</span></a>
+        <p><%= this.error %></p>
+        <input type="button" class="btn btn_close" value="<%= Translations.get(4) %>">
+    </div>
+    ]]>
+</script>
+
+
+
+<script type="text/x-jqote-template" id="template_omattiedot_container">
+	<![CDATA[
+	<div class="narrowColumn">
+		<ul id="userinfoNavi" class="secondNavSimple">
+			<li id="userinfoNavi-varaukset">
+				<a href="?page=omattiedot&subpage=varaukset"><%= Translations.get(13) %></a>
+			</li>
+			<li id="userinfoNavi-kausikortti">
+				<a href="?page=omattiedot&subpage=kausikortti"><%= Translations.get(19) %></a>
+			</li>
+			<li id="userinfoNavi-kayttajatiedot">
+				<a href="?page=omattiedot&subpage=kayttajatiedot"><%= Translations.get(108) %></a>
+			</li>
+			<li id="userinfoNavi-historia">
+				<a href="?page=omattiedot&subpage=historia"><%= Translations.get(173) %></a>
+			</li>
+            <!-- li>
+                <a href="?page=omattiedot&subpage=paikkavahti"><%= Translations.get(174) %> <span class="betaFeature">beta</span></a>
+            </li -->
+        </ul>
+	</div>
+	<div class="wideColumn">
+		<div id="userPageContent"></div>
+	</div>
+	]]>
+</script>
+    <script type="text/x-jqote-template" id="template_navigation_top">
+    <![CDATA[
+    <ul id="topNavi">
+        <li id="topNavi-etusivu"><a href="?page=etusivu"><%= Translations.get(83) %></a></li>
+        <li id="topNavi-varaapalveluita"><a href="?page=varaapalveluita&subpage=ryhmaliikunta"><%= Translations.get(84) %></a></li>
+        <li id="topNavi-liikumeilla"><a href="?page=liikumeilla"><%= Translations.get(85) %></a></li>
+        <li id="topNavi-yhteisoille"><a href="?page=yhteisoille"><%= Translations.get(86) %></a></li>
+        <li id="topNavi-yleista"><a href="?page=yleista"><%= Translations.get(87) %></a></li>
+        <li id="topNavi-omattiedot" class="logged_in"><a href="?page=omattiedot"><%= Translations.get(88) %></a></li>
+    </ul>
+    ]]>	
+</script>
+
+
+<script type="text/x-jqote-template" id="template_varaapalveluita_container">
+	<![CDATA[
+	<div id="serviceFiltersWide">
+		<div id="serviceSelection" class="serviceFilters">
+			<h4><%= Translations.get(89) %>:</h4>
+			<ul>
+				<li id="serviceNavi-ryhmaliikunta"><input name="rb_palvelu" id="rb_ryhmaliikunta" type="radio" /><label for="rb_ryhmaliikunta"><a href="?page=varaapalveluita&subpage=ryhmaliikunta"><%= Translations.get(6) %></a></label></li>
+				<li id="serviceNavi-yksilopalvelut"><input name="rb_palvelu" id="rb_yksilopalvelut" type="radio" /><label for="rb_yksilopalvelut"><a href="?page=varaapalveluita&subpage=yksilopalvelut"><%= Translations.get(7) %></a></label></li>
+				<li id="serviceNavi-kenttajasalivaraukset"><input name="rb_palvelu" id="rb_kenttajasalivaraukset" type="radio" /><label for="rb_kenttajasalivaraukset"><a href="?page=varaapalveluita&subpage=kenttajasalivaraukset"><%= Translations.get(8) %></a></label></li>
+				<li id="serviceNavi-kurssit"><input name="rb_palvelu" id="rb_kurssit" type="radio" /><label for="rb_kurssit"><a href="?page=varaapalveluita&subpage=kurssit"><%= Translations.get(10) %></a></label></li>
+				<li id="serviceNavi-palloilu"><input name="rb_palvelu" id="rb_palloilu" type="radio" /><label for="rb_palloilu"><a href="?page=varaapalveluita&subpage=palloilu"><%= Translations.get(159) %></a></label></li>
+			</ul>
+		</div>
+		<div id="campusSelection" class="serviceFilters">
+			<h4><%= Translations.get(90) %>:</h4>
+			<ul id="sijaintiSelection">
+			</ul>
+		</div>
+
+		<!--<div id="sportSelection" class="serviceFilters">
+			<div id="sportsGroupSelection">
+				<h4>Liikuntatavat</h4>
+				<ul id="">
+					<li><input id="rb_kaikkiLajit" checked="checked" name="rb_liikuntatavat" value="kaikki" class="rb" type="radio" /><label for="rb_kaikkiLajit">Kaikki lajit</label></li>
+					<li><input id="rb_palloilu" name="rb_liikuntatavat" value="palloilu" class="rb" type="radio" /><label for="rb_palloilu">Palloilu</label></li>
+					<li><input id="rb_helppoaJaTehokasta" name="rb_liikuntatavat" value="helppoaJaTehokasta" class="rb" type="radio" /><label for="rb_helppoaJaTehokasta">Helppoa ja tehokasta</label></li>
+					<li><input id="rb_kehoJaMieli" name="rb_liikuntatavat" class="rb" value="kehoJaMieli" type="radio" /><label for="rb_kehoJaMieli">Keho ja mieli</label></li>
+					<li><input id="rb_kuntoaJaKuvioita" name="rb_liikuntatavat" class="rb" value="kuntoaJaKuvioita" type="radio" /><label for="rb_kuntoaJaKuvioita">Kuntoa ja kuvioita	</label></li>
+					<li><input id="rb_kuntoaKevyemmin" name="rb_liikuntatavat" class="rb" value="kuntoaKevyemmin" type="radio" /><label for="rb_kuntoaKevyemmin">Kuntoa kevyemmin</label></li>
+					<li><input id="rb_tanssit" name="rb_liikuntatavat" class="rb" value="tanssit" type="radio" /><label for="rb_tanssit">Tanssit</label></li>
+					<li><input id="rb_yoSpin" name="rb_liikuntatavat" class="rb" value="yoSpin" type="radio" /><label for="rb_yoSpin">YO Spin (Sisäpyöräily)</label></li>
+				</ul>
+			</div>
+			<div id="individualSportSelection">
+				<h4>Lajit <a id="removeSelectedSports">Poista kaikki</a><a id="selectAllSports">Valitse kaikki</a></h4>
+				<ul id="">
+					<li class="shown helppoaJaTehokasta"><input checked="checked" id="chk_aamulenkki" name="chk_aamulenkki" class="chk" type="checkbox" /><label for="chk_aamulenkki">Aamulenkki</label></li>
+					<li class="shown kuntoaJaKuvioita"><input checked="checked" id="chk_aerofit" name="chk_aerofit" class="chk" type="checkbox" /><label for="chk_aerofit">Aerofit</label></li>
+					<li class="shown tanssit"><input checked="checked" id="chk_afro" name="chk_afro" class="chk" type="checkbox" /><label for="chk_afro">Afro</label></li>
+					<li class="shown kehoJaMieli"><input checked="checked" id="chk_astangajooga" name="chk_astangajooga" class="chk_astangajooga" type="checkbox" /><label for="chk_astangajooga">Astangajooga</label></li>
+					<li class="shown tanssit"><input checked="checked" id="chk_bailatino" name="chk_bailatino" class="chk" type="checkbox" /><label for="chk_bailatino">Bailatino</label></li>
+					<li class="shown kuntoaJaKuvioita"><input checked="checked" id="chk_" name="" class="chk" type="checkbox" /><label for="chk_">Body</label></li>
+					<li class="shown helppoaJaTehokasta"><input checked="checked" id="chk_bodypump" name="chk_bodypump" class="chk" type="checkbox" /><label for="chk_bodypump">Bodypump&copy;</label></li>
+					<li class="shown tanssit"><input checked="checked" id="chk_" name="" class="chk" type="checkbox" /><label for="chk_">Brasilia mix</label></li>
+					<li class="shown kehoJaMieli"><input checked="checked" id="chk_" name="" class="chk" type="checkbox" /><label for="chk_">ChiBall</label></li>
+					<li class="shown tanssit"><input checked="checked" id="chk_" name="" class="chk" type="checkbox" /><label for="chk_">Cubanueva</label></li>
+					<li class="shown helppoaJaTehokasta"><input checked="checked" id="chk_circuitTraining" name="chk_circuitTraining" class="chk" type="checkbox" /><label for="chk_circuitTraining">Circuit Training</label></li>
+					<li class="shown kuntoaJaKuvioita"><input checked="checked" id="chk_" name="" class="chk" type="checkbox" /><label for="chk_">Dance</label></li>
+					<li class="shown kehoJaMieli"><input checked="checked" id="chk_" name="" class="chk" type="checkbox" /><label for="chk_">Feldenkreis</label></li>
+					<li class="shown kuntoaKevyemmin"><input checked="checked" id="chk_" name="" class="chk" type="checkbox" /><label for="chk_">Fitball</label></li>
+					<li class="shown tanssit"><input checked="checked" id="chk_" name="" class="chk" type="checkbox" /><label for="chk_">Funk</label></li>
+					<li class="shown helppoaJaTehokasta"><input checked="checked" id="chk_funktionaalinenHarjoittelu" name="chk_funktionaalinenHarjoittelu" class="chk" type="checkbox" /><label for="chk_funktionaalinenHarjoittelu">Funktionaalinen Harjoittelu</label></li>
+					<li class="shown palloilu"><input checked="checked" id="chk_futsal" name="chk_futsal" class="chk" type="checkbox" /><label for="chk_futsal">Futsal</label></li>
+					<li class="shown tanssit"><input checked="checked" id="chk_" name="" class="chk" type="checkbox" /><label for="chk_">Happy Dance</label></li>
+					<li class="shown kuntoaKevyemmin"><input checked="checked" id="chk_" name="" class="chk" type="checkbox" /><label for="chk_">Huolettomat hartiat</label></li>
+					<li class="shown kuntoaKevyemmin"><input checked="checked" id="chk_" name="" class="chk" type="checkbox" /><label for="chk_">Hydrobic (Tapiolan uimahalli)</label></li>
+					<li class="shown kuntoaKevyemmin"><input checked="checked" id="chk_" name="" class="chk" type="checkbox" /><label for="chk_">Hyvän olon tunti</label></li>
+					<li class="shown yoSpin"><input checked="checked" id="chk_" name="" class="chk" type="checkbox" /><label for="chk_">Intervalli (YO Spin)</label></li>
+					<li class="shown helppoaJaTehokasta"><input checked="checked" id="chk_" name="" class="chk" type="checkbox" /><label for="chk_">Intervalli ja keskivartalotreeni</label></li>
+					<li class="shown helppoaJaTehokasta"><input checked="checked" id="chk_intervalliBody" name="chk_intervalliBody" class="chk" type="checkbox" /><label for="chk_intervalliBody">Intervallibody</label></li>
+					<li class="shown helppoaJaTehokasta"><input checked="checked" id="chk_intervalliStep" name="chk_kahvakuulaTreeni" class="chk" type="checkbox" /><label for="chk_kahvakuulaTreeni">IntervalliStep</label></li>
+					<li class="shown kuntoaKevyemmin"><input checked="checked" id="chk_" name="" class="chk" type="checkbox" /><label for="chk_">Keppijumppa</label></li>
+					<li class="shown kuntoaKevyemmin"><input checked="checked" id="chk_" name="" class="chk" type="checkbox" /><label for="chk_">Kuntosalicircuit</label></li>
+					<li class="shown kehoJaMieli"><input checked="checked" id="chk_" name="" class="chk" type="checkbox" /><label for="chk_">Jooga</label></li>
+					<li class="shown helppoaJaTehokasta"><input checked="checked" id="chk_kahvakuulaTreeni" name="" class="chk" type="checkbox" /><label for="chk_">Kahvakuulacircuit</label></li>
+					<li class="shown helppoaJaTehokasta"><input checked="checked" id="chk_keskivartaloTreeni" name="chk_keskivartaloTreeni" class="chk" type="checkbox" /><label for="chk_keskivartaloTreeni">Keskivartalotreeni</label></li>
+					<li class="shown helppoaJaTehokasta"><input checked="checked" id="chk_kuntoNyrkkeily" name="chk_kuntoNyrkkeily" class="chk" type="checkbox" /><label for="chk_kuntoNyrkkeily">Kuntonyrkkeily</label></li>
+					<li class="shown kehoJaMieli"><input checked="checked" id="chk_" name="" class="chk" type="checkbox" /><label for="chk_">Lempeä jooga</label></li>
+					<li class="shown kuntoaKevyemmin"><input checked="checked" id="chk_" name="" class="chk" type="checkbox" /><label for="chk_">Niska-selkä</label></li>
+					<li class="shown yoSpin"><input checked="checked" id="chk_" name="" class="chk" type="checkbox" /><label for="chk_">Perus (YO Spin)</label></li>
+					<li class="shown kehoJaMieli"><input checked="checked" id="chk_" name="" class="chk" type="checkbox" /><label for="chk_">Pilates</label></li>
+					<li class="shown kuntoaJaKuvioita"><input checked="checked" id="chk_" name="" class="chk" type="checkbox" /><label for="chk_">Step</label></li>
+					<li class="shown kehoJaMieli"><input checked="checked" id="chk_" name="" class="chk" type="checkbox" /><label for="chk_">Taiji</label></li>
+					<li class="shown yoSpin"><input checked="checked" id="chk_" name="" class="chk" type="checkbox" /><label for="chk_">Tasasyke (YO Spin)</label></li>
+					<li class="shown kuntoaKevyemmin"><input checked="checked" id="chk_" name="" class="chk" type="checkbox" /><label for="chk_">Venyttely</label></li>
+					<li class="shown kuntoaKevyemmin"><input checked="checked" id="chk_" name="" class="chk" type="checkbox" /><label for="chk_">Venyttely ja kehonhuolto</label></li>
+					<li class="shown tanssit"><input checked="checked" id="chk_" name="" class="chk" type="checkbox" /><label for="chk_">Salsa</label></li>
+					<li class="shown palloilu"><input checked="checked" id="chk_sahly" name="chk_sahly" class="chk" type="checkbox" /><label for="chk_sahly">Sähly</label></li>
+					<li class="shown tanssit"><input checked="checked" id="chk_zumba" name="chk_zumba" class="chk" type="checkbox" /><label for="chk_zumba">Zumba</label></li>
+				</ul>
+			</div>
+		</div>-->
+		<div id="datepicker"></div>
+	</div>
+	<% if (this.viewChanger !== undefined) { %>
+		<a class="changeDayWeekView" href="<%= this.viewChanger.link %>"><%= this.viewChanger.text %></a>
+	<% } %>
+	<h3>
+	<%= Translations.get({'ryhmaliikunta': 6, 'yksilopalvelut': 7, 'kenttajasalivaraukset': 8, 'kurssit': 10, 'palloilu': 159}[this.subPage]) %>
+	<span id="campusListHeaderSuffix"></span>
+	</h3>
+	<div id="reservationPageContainer"/>
+	<span class="noSelectedCampusesMessage"><%= Translations.get(92) %></span>
+	]]>
+</script>
+
+
+<script type="text/x-jqote-template" id="template_header">
+	<![CDATA[
+	<div id="pageHeader">
+		<div class="wrapper">
+			 <form name="frmTopSearch" id="frmTopSearch">
+				<input id="tfTopSearch" name="tfTopSearch" class="tf" />
+				<span id="tfTopSearchDefaultText"><%= Translations.get(80) %></span>
+				<input name="btnTopSearchSubmit" id="btnTopSearchSubmit" type="submit" value="<%= Translations.get(79) %>" class="blueButton" />
+			</form>
+			<div id="languageSelection">
+				<%= YolTemplate.parse("#template_header_languageLinks", [{ 'id': 'fi', 'title': 'Suomeksi' }, { 'id': 'sv', 'title': 'På Svenska' }, { 'id': 'en', 'title': 'In English' }]) %>
+			</div>
+			<div id="login">
+				<a class="lnk_login not_logged_in" href="#"><%= Translations.get(96) %></a>
+				<div class="logged_in">
+					<span class="greeting"><%= Translations.get(134, '<a class="authenticatedUserFirstName" href="?page=omattiedot"></a>') %></span> <a id="lnk_logout" href="#"><%= Translations.get(95) %></a>
+				</div>
+			</div>
+		</div>
+	</div>
+	]]>
+</script>
+
+
+<script type="text/x-jqote-template" id="template_header_languageLinks">
+	<![CDATA[
+	<% if (this.id == YolLanguage.getActive()) { %>
+		<span><%= this.title %></span>
+	<% } else { %>
+		<a class="languageLink" data-id="<%= this.id %>" href="#"><%= this.title %></a>
+	<% } %>
+	]]>
+</script>
+
+
+<script type="text/x-jqote-template" id="template_footer">
+	<![CDATA[
+	<div id="footer">
+		<div class="logos">
+			<a href="http://www.helsinki.fi/yliopisto/"><img src="<%= Utils.imageUrl('logo_hy.png') %>" style="margin-right: 30px;" alt="Helsingin yliopisto" /></a>
+			<a href="http://www.aalto.fi/"><img src="<%= Utils.imageUrl('logo_aalto.png') %>" alt="Aalto-yliopisto" /></a>
+		</div>
+	</div>
+	]]>
+</script>
+    <script type="text/x-jqote-template" id="tmpl_login_popup">
+    <![CDATA[
+    <div id="loginPopup" class="popup">
+        <a class="btn_close"><span>Close</span></a>
+		<h1><%= Translations.get(152) %></h1>
+		<br/>
+		<p><a class="shibbolethLink_hy"><%= Translations.get(153) %></a></p><br/>
+		<p><a class="shibbolethLink_aalto"><%= Translations.get(156) %></a></p><br/>
+        <p><a class="databaseLoginLink"><%= Translations.get(219) %></a></p>
+        <div class="databaseLoginContainer">
+            <p><%= Translations.get(113) %>: </p><p><input class="databaseLoginUserName"/></p>
+            <p><%= Translations.get(98) %>: </p><p><input type="password" class="databaseLoginPassword"/></p>
+            <p><input class="submitButton blueButton" type="button" value="<%= Translations.get(99) %>"> <span class="databaseLoginResultMessage"/></p>
+        </div>
+		<p><br/><%= Translations.get(102, '<a href="' + Translations.get(157) + '">', '</a>') %></p>
+        <p><br/><a href="/?page=password&subpage=forgotten"><%= Translations.get(214) %></a></p>
+    </div>
+	]]>
+</script>
+
+<script type="text/x-jqote-template" id="tmpl_login_notificationPopup">
+    <![CDATA[
+    <div class="popup">
+        <a class="btn_close"><span>Close</span></a>
+        <div class="content"></div>
+        <p>&nbsp;</p>
+        <input class="btn okButton" type="submit" value="<%= Translations.get(4) %>" />
+    </div>
+	]]>
+</script>
+
+<script type="text/x-jqote-template" id="template_login_notification">
+	<![CDATA[
+	<div>
+		<% if (this.cancelledReservables.length > 0) { %>
+			<h1><%= Translations.get(103) %></h1>
+			<% for (var i = 0; i < this.cancelledReservables.length; i++) { %>
+				<p>Huomaa ett\u00E4 varaamasi <strong><%= this.cancelledReservables[i].name %> <%= YolTemplate.parse('#template_common_timePeriod', this.cancelledReservables[i]) %></strong> on peruttu.</p> <!-- TODO translate -->
+			<% } %>
+		<% } %>
+		<% if (this.blockers.length > 0) { %>
+			<h1><%= Translations.get(105) %></h1>
+			<p><%= Translations.get(106) %></p><p>&nbsp;</p>
+			<p><a href="?page=omattiedot&subpage=varaukset"><%= Translations.get(107) %></a></p>
+		<% } %>
+	</div>
+	]]>
+</script>
+    <script type="text/x-jqote-template" id="template_password_reset">
+    <![CDATA[
+    <div class="wideColumn">
+        <h3><%= Translations.get(213) %></h3>
+        <div id="changePasswordInput"/>
+    </div>
+    ]]>
+</script>
+
+
+<script type="text/x-jqote-template" id="template_password_reset_error">
+    <![CDATA[
+    <div class="wideColumn">
+        <h3><%= this.description %></h3>
+    </div>
+    ]]>
+</script>
+
+<script type="text/x-jqote-template" id="template_password_change">
+    <![CDATA[
+    <br/>
+    <p><strong><%= Translations.get(205) %></strong></p>
+    <table>
+        <tr><td><%= Translations.get(206) %></td><td><input class="currentPassword" type="password"/></td></tr>
+        <tr><td><%= Translations.get(207) %></td><td><input class="newPassword1" type="password"/></td><td rowspan="2" class="spinnerContainer"></td></tr>
+        <tr><td><%= Translations.get(208) %></td><td><input class="newPassword2" type="password"/></td></tr>
+    </table>
+    <br/>
+    <input type="button" class="btn submitButton" value="<%= Translations.get(209) %>" />&nbsp;
+    <input type="button" class="btn cancelButton" value="<%= Translations.get(210) %>" />&nbsp;
+    <span class="resultDescription"></span>
+    ]]>
+</script>
+
+
+<script type="text/x-jqote-template" id="template_password_forgotten">
+    <![CDATA[
+    <div class="wideColumn">
+        <h3><%= Translations.get(214) %></h3>
+        <div id="forgottenPasswordInput">
+            <br/>
+            <p><strong><%= Translations.get(215) %></strong></p>
+            <br/>
+            <p><%= Translations.get(113) %>:&nbsp;<input class="email"/></p>
+            <input type="button" class="btn submitButton" value="<%= Translations.get(101) %>" />&nbsp;
+            <span class="resultDescription"></span>
+            <p><br/></p>
+            <p><strong><%= Translations.get(216) %></strong></p>
+            <p><a href="http://www.helsinki.fi/helpdesk/ohjeet/kayttoluvat_ja_salasanat/salasanat/unohtunut_salasana.html">Helsingin yliopisto</a></p>
+            <p><a href="https://salasana.aalto.fi">Aalto-yliopisto</a></p>
+        </div>
+    </div>
+    ]]>
+</script>    <script type="text/x-jqote-template" id="template_instructor_events">
+    <![CDATA[
+    <div class="wideColumn">
+        <h3><%= Translations.get(5) %>: <%= this.fullName() %></h3>
+        <div id="instructorEventList"/>
+    </div>
+    ]]>
+</script>
+
+
+<script type="text/x-jqote-template" id="template_instructor_role">
+    <![CDATA[
+    <div class="instructorList">
+    <p class="instructorRole"><%= Translations.get(this.roleTranslationKey) %></p>
+    <% for (var i = 0; i < this.instructors.length; i++) { %>
+        <a href="/?page=instructor&id=<%= this.instructors[i].id %>"><%= this.instructors[i].fullName() %></a><br/>
+    <% } %>
+    </div>
+    ]]>
+</script>
+</head>
+
+<body>
+
+	<!--[if lt IE 7 ]>
+		<script src="/static/v2011/js/lib/dd_belatedpng.js"></script>
+		<script>DD_belatedPNG.fix("img, .png_bg"); // Fix any <img> or .png_bg bg-images. Also, please read goo.gl/mZiyb </script>
+	<![endif]-->
+	
+<script type="text/javascript">
+
+	var _gaq = _gaq || [];
+	_gaq.push(['_setAccount', 'UA-12979453-3']);
+	_gaq.push(['_trackPageview']);
+	
+	(function() {
+		var ga = document.createElement('script'); ga.type = 'text/javascript'; ga.async = true;
+		ga.src = ('https:' == document.location.protocol ? 'https://ssl' : 'http://www') + '.google-analytics.com/ga.js';
+		var s = document.getElementsByTagName('script')[0]; 
+		s.parentNode.insertBefore(ga, s);
+	 })();
+
+</script>	
+	
+</body>	
 </html>
