@@ -1,966 +1,136 @@
-
-<!DOCTYPE HTML>
-<html xmlns:wicket="http://wicket.sourceforge.net/" xmlns:fb="http://ogp.me/ns/fb#">
-<head><script type="text/javascript" src="./wicket/resource/org.apache.wicket.resource.JQueryResourceReference/jquery/jquery-1.11.2.min-ver-5790EAD7AD3BA27397AEDFA3D263B867.js"></script>
-<script type="text/javascript" src="./wicket/resource/fi.jokakoti.webapp.wicket.pages.common.ads.AdSlotsInitBehavior/jokakoti-ads-ver-782F52B4EB6C252E182EC1F610586562.js"></script>
-<script type="text/javascript" src="./wicket/resource/org.apache.wicket.ajax.AbstractDefaultAjaxBehavior/res/js/wicket-event-jquery.min-ver-2A8B8EF9295A81B4FF15AA3DE14044D7.js"></script>
-<script type="text/javascript" src="./wicket/resource/org.apache.wicket.ajax.AbstractDefaultAjaxBehavior/res/js/wicket-ajax-jquery.min-ver-E104EDF0826B33507C50375F69A9AA5D.js"></script>
-<script type="text/javascript" id="wicket-ajax-base-url">
-/*<![CDATA[*/
-Wicket.Ajax.baseUrl="?0";
-/*]]>*/
-</script>
-<script type="text/javascript" src="./wicket/resource/fi.jokakoti.webapp.wicket.pages.ResponsiveSiteHeaderPanel/ResponsiveSiteHeaderPanel-ver-83EDA1E757EC1C30695C5A2354339B9F.js"></script>
-<script type="text/javascript" src="./wicket/resource/fi.jokakoti.webapp.wicket.search.history.SearchHistoryPanel/js/search-history-panel-ver-6E07350EF1F5FC4D9FFB00BAC24ACC9E.js"></script>
-<script type="text/javascript" id="decode-and-assign-search">
-/*<![CDATA[*/
-var decodeEncryptedSearchAndAssignToSession = function (data) {
-var attrs = {"u":"./?0-2.IBehaviorListener.0-searchFormPanel-searchHistoryDialogLink-dialogContainer-dialog","c":"id4"};
-var params = [{"name":"data","value":encodeURIComponent(data)}];
-attrs.ep = params.concat(attrs.ep || []);
-Wicket.Ajax.ajax(attrs);
-}
-;
-/*]]>*/
-</script>
-<link rel="stylesheet" type="text/css" href="./wicket/resource/fi.jokakoti.webapp.wicket.common.js.JqueryUiJavascriptReference/jquery-ui-custom-style/jquery-ui-1.10.3.custom-ver-EABC971889B26F237E2E2E8D93CEA8A6.css" />
-<script type="text/javascript" src="./wicket/resource/fi.jokakoti.webapp.wicket.common.js.JqueryUiJavascriptReference/jquery-ui-1.11.2.custom/jquery-ui.min-ver-4AA9E597DD0D2E4A1CE5CD870AE5DDB2.js"></script>
-<script type="text/javascript" src="./wicket/resource/org.apache.wicket.ajax.form.AjaxFormChoiceComponentUpdatingBehavior/AjaxFormChoiceComponentUpdatingBehavior.min-ver-D12E39A9A23F5ADEFCFE3BFC3D520D68.js"></script>
-
-
-<script src="./wicket/resource/fi.jokakoti.webapp.wicket.search.SearchFormComponentsContainerPanel/js/form-change-busy-ver-9D8FDF0CFC569F382ED7A8885ACE5376.js" type="text/javascript"></script>
-
-
-
-<link rel="stylesheet" href="./wicket/resource/fi.jokakoti.webapp.wicket.pages.map.MapContainerPanel/map-ver-41913401B88C8A6B6A6AB7D310F41A39.css" type="text/css"/>
-
-<script type="text/javascript" src="./wicket/resource/fi.jokakoti.webapp.wicket.pages.map.MapContainerPanel/openlayers/2.13.1/OpenLayers-ver-BA9A786FD3BB97F04C61CCD22ED03607.js"></script>
-<script type="text/javascript" src="./wicket/resource/fi.jokakoti.webapp.wicket.pages.map.MapContainerPanel/loading-ver-3361883B8342CE2B5816BED1DA9C770A.js"></script>
-<script type="text/javascript" id="map-container">
-/*<![CDATA[*/
-var jokakoti = window.jokakoti || {}; jokakoti.map = jokakoti.map || {}; jokakoti.map.layers = jokakoti.map.layers || {};
-jokakoti.map.layers.wms_url = "http://www.jokakoti.fi/nls/ws/rasteriaineistot/image";
-jokakoti.map.layers.gwc_url = "http://www.jokakoti.fi/map/v1";
-jokakoti.map.foreignRestUrl = "./mappoints/realestates";
-jokakoti.map.restUrlRegion = "./mappoints/group/province";
-jokakoti.map.restUrlCounty = "./mappoints/group/county";
-jokakoti.map.restUrlBBOX = "./mappoints/realestates";
-jokakoti.map.foreignRestUrl = "./mappoints/realestates";
-jokakoti.map.restUrlSearchResultExtent = "./mappoints/search-result-extent";
-/*]]>*/
-</script>
-<script type="text/javascript" src="./wicket/resource/fi.jokakoti.webapp.wicket.pages.map.MapPanel/jokakoti-map-ver-153D7392F196C7729FF6301F4F1BE9BD.js"></script>
-<script type="text/javascript" src="./wicket/resource/fi.jokakoti.webapp.wicket.search.map.GenericSearchResultMapPanel/search-map-ver-60C12499E72C82356FCDEDE43B636438.js"></script>
-<script type="text/javascript" id="import-picturefill" src="/wicket/js/lib/picturefill/picturefill.min.js"></script>
-<script type="text/javascript" id="jokakoti-responsive-picture">
-/*<![CDATA[*/
-var jokakoti=window.jokakoti||{};jokakoti.responsivePicture=jokakoti.responsivePicture||{};(function(ns){'use strict';ns.updateAll=function(){typeof picturefill !== 'undefined'?picturefill():null};ns.updateElements=function(s){if(s&&typeof picturefill !== 'undefined'){picturefill({elements:document.querySelectorAll(s)});}};})(jokakoti.responsivePicture);
-/*]]>*/
-</script>
-<script type="text/javascript" src="./wicket/resource/fi.jokakoti.webapp.wicket.pages.search.list.SearchResultListPanel/SearchResultListPanel-ver-BEAD5D30D340A5388E997487AFDFCE52.js"></script>
-
-
-<script type="text/javascript" src="./wicket/resource/fi.jokakoti.webapp.wicket.search.MainSearchPanel/js/MainSearchPanel-ver-BD4EB6F84AEC70A48645BEF2B3724E2D.js"></script>
-
-
-<!--[if IE]>
-<script src="/wicket/js/html5.js"></script>
-<![endif]-->
-<title id="id1b">Jokakoti.fi - asunnot, vuokra-asunnot, uudiskohteet, tontit, loma-asunnot, maatilat, metsätilat, autotallit ja autopaikat</title>
-
-
-<link rel="stylesheet" href="./wicket/resource/fi.jokakoti.webapp.wicket.pages.AbstractEmptyJokakotiPage/css/print-ver-F9FBFA2F68633B1B8F0722C1F33BC079.css" media="print"/>
-
-
-<link rel="shortcut icon" href="http://www.jokakoti.fi/favicon.ico"/>
-<meta http-equiv="Content-Type" content="text/html;charset=UTF-8"/>
-<meta charset="utf-8"/>
-<meta name="description" content="Jokakoti.fi verkkopalvelusta löytyvät koko Suomen asunnot, uudiskohteet, tontit, loma-asunnot, toimitilat, metsätilat, maatilat, autotallit ja autopaikat."/>
-<script type="text/javascript">
-/*<![CDATA[*/
-
-var googletag = googletag || {};
-googletag.cmd = googletag.cmd || [];
-(function () {
-var gads = document.createElement('script');
-gads.async = true;
-gads.type = 'text/javascript';
-var useSSL = 'https:' == document.location.protocol;
-gads.src = (useSSL ? 'https:' : 'http:') +
-'//www.googletagservices.com/tag/js/gpt.js';
-var node = document.getElementsByTagName('script')[0];
-node.parentNode.insertBefore(gads, node);
-})();
-
-/*]]>*/
-</script>
-<script>
-/*<![CDATA[*/
-
-wicketAjaxBusy = function () {
-for (var c in Wicket.channelManager.channels) {
-if (Wicket.channelManager.channels[c].busy) {
-Wicket.Log.info("Channel " + c + " is busy");
-return true;
-}
-}
-Wicket.Log.info("No channels are busy");
-return false;
-}
-
-/*]]>*/
-</script>
-<script type="text/javascript">var jokakoti = jokakoti || {}; var wicketBasePath = '/'; jokakoti.facebookAppId = '1507773352842528';</script>
-<link rel="stylesheet" type="text/css" href="./wicket/resource/fi.jokakoti.webapp.wicket.pages.AbstractCommonJokakotiPage/css/reset-ver-F2FC820CD90CB94881C58FDFBEC4EAB8.css" />
-<link rel="stylesheet" type="text/css" href="/processed-resources//public-ver-41ded128b39656fd497af54ad48cf60e.css" />
-<script type="text/javascript" id="is-mobile">
-/*<![CDATA[*/
-var jokakoti = window.jokakoti || {}; jokakoti.page = jokakoti.page || {};jokakoti.page.isMobile = function(){return true && window.screen.width <= 768};jokakoti.page.isSmallWindow = function() { return window.innerWidth <= 768};
-/*]]>*/
-</script>
-<script type="text/javascript" src="/wicket/js/inheritance.js"></script>
-<script type="text/javascript" src="./wicket/resource/fi.jokakoti.webapp.wicket.pages.JokakotiMainJavascriptReference/js/default-ver-1C75A598D9960BA80B2F99B06E764629.js"></script>
-<meta name="viewport" content="width=device-width, initial-scale=1"><script type="text/javascript" src="./wicket/resource/fi.jokakoti.webapp.wicket.common.js.WebStorageInterfaceJavaScriptResourceReference/webstorage-interface-ver-EF6A490E8076014588F490DF803DEFB3.js"></script>
-<script type="text/javascript" src="./wicket/resource/fi.jokakoti.webapp.wicket.search.history.SearchHistoryPanel/js/search-history-interface-ver-38EB7785671DA7142765030F7A0A0E0B.js"></script>
-<script type="text/javascript" src="./wicket/resource/fi.jokakoti.webapp.wicket.pages.map.MapContainerPanel/map-storage-interface-ver-FB7F757548F7B975AF0C0A0E6AFF4C14.js"></script>
-<script type="text/javascript" id="dfp-targeting">
-/*<![CDATA[*/
-googletag.cmd.push(function () { 
-googletag.pubads().setTargeting('Ilmoitus','Myynti');
-googletag.pubads().setTargeting('Tyyppi','Tila');
-googletag.pubads().setTargeting('Sivutyyppi','etusivu');
-googletag.pubads().setTargeting('Ympäristö','prod');
-}); 
-
-/*]]>*/
-</script>
-<link rel="canonical" href="http://www.jokakoti.fi/" /><script type="text/javascript" id="set-wicket-ajax-facebook-login-handler">
-/*<![CDATA[*/
-jokakoti.session.setHandleWicketLoginCallback(function (accessToken,redirectPolicy,redirectTarget) {
-var attrs = {"u":"./?0-2.IBehaviorListener.0-"};
-var params = [{"name":"accessToken","value":accessToken},{"name":"redirectPolicy","value":redirectPolicy},{"name":"redirectTarget","value":redirectTarget}];
-attrs.ep = params.concat(attrs.ep || []);
-Wicket.Ajax.ajax(attrs);
-}
-);
-/*]]>*/
-</script>
-<script type="text/javascript" id="init-dfp-ad-slots">
-/*<![CDATA[*/
-jokakoti.ads.addRenderCallback({ adSlotIds : ['div-gpt-ad-1417007444516-3'], onRender : function(){$('.banner.panoraama').addClass('rendered')}});jokakoti.ads.initAdSlots(['div-gpt-ad-1417007444516-3','div-gpt-ad-1417007444516-4','div-gpt-ad-1417007444516-0']);
-/*]]>*/
-</script>
-<script type="text/javascript" >
-/*<![CDATA[*/
-Wicket.Event.add(window, "domready", function(event) { 
-Wicket.Ajax.ajax({"f":"login-form-dialog","u":"./?0-2.IBehaviorListener.0-siteHeader-commonLogin-loginForm-loginForm-submitButton","e":"click","c":"id1","m":"POST"});;
-$('#id2').hide();;
-Wicket.Ajax.ajax({"f":"registration-form-mobile","u":"./?0-2.IBehaviorListener.0-siteHeader-commonLogin-mobileRegistrationForm-form-submit","e":"click","c":"id3","m":"POST"});;
-dataLayer.push({'event' : 'register','action' : 'form','type' : 'standard'});;
-$('#id5').jkDialog({button: $('#id6')});;
-var self = new elements['Text'](document.getElementById('id7'));self.setDefault('Jokakotitunniste / Kohdenumero');self.onLeave();;
-$('#id7').keypress(function(event) { if(event.which == 13) { event.preventDefault();$('#id8').trigger('click');}});;
-Wicket.Ajax.ajax({"f":"id9","u":"./?0-2.IBehaviorListener.0-searchFormPanel-realEstateIdSearchDialogLink-dialogContainer-dialog-searchForm-submitButton","e":"click","c":"id8","sc":"submitButton","m":"POST"});;
-Wicket.Ajax.ajax({"f":"id9","u":"./?0-2.IBehaviorListener.0-searchFormPanel-realEstateIdSearchDialogLink-dialogContainer-dialog-searchForm","e":"submit","c":"id9","m":"POST"});;
-$('#ida').jkDialog({button: $('#idb')});;
-Wicket.Ajax.ajax({"u":"./?0-2.IBehaviorListener.0-searchFormPanel-searchFormPanel-searchForm-formComponents-formSections-0-formSection-itemsPanel-columnItems-1-formComponent-select","e":"change","c":"id58","ad":true,"m":"POST","bsh":[function(attrs, jqXHR, settings){showBusyIndicatorAndHideSearchForm();}]});;
-var self = new elements['InlineDropDown'](document.getElementById('id58'));;
-Wicket.Ajax.ajax({"u":"./?0-2.IBehaviorListener.0-searchFormPanel-searchFormPanel-searchForm-formComponents-formSections-1-formSection-itemsPanel-columnItems-1-formComponent-select","e":"change","c":"id59","ad":true,"m":"POST","bsh":[function(attrs, jqXHR, settings){showBusyIndicatorAndHideSearchForm();}]});;
-var self = new elements['InlineDropDown'](document.getElementById('id59'));;
-Wicket.Ajax.ajax({"u":"./?0-2.IBehaviorListener.0-searchFormPanel-searchFormPanel-searchForm-formComponents-formSections-4-formSection-columns-0-formItems-columnItems-1-formComponent-areaTypeSelection","e":"change","c":"id5a","ad":true,"m":"POST"});;
-var self = new elements['InlineDropDown'](document.getElementById('id5a'));;
-var self = new elements['Text'](document.getElementById('id5b'));self.setDefault('katu, kaupunginosa, kaupunki, postinumero, kunta...');self.onLeave();;
-var self = new elements['AreaPicker'](document.getElementById('id5b'));;
-Wicket.Ajax.ajax({"u":"./?0-2.IBehaviorListener.0-searchFormPanel-searchFormPanel-searchForm-formComponents-formSections-4-formSection-columns-0-formItems-columnItems-1-formComponent-locations","e":"change","c":"id5c","ad":true,"m":"POST"});;
-var self = new elements['Text'](document.getElementById('id5d'));self.setDefault('maalämpö, venepaikka, kartano...');self.onLeave();;
-Wicket.Ajax.ajax({"u":"./?0-2.IBehaviorListener.0-searchFormPanel-searchFormPanel-searchForm-formComponents-formSections-4-formSection-columns-0-formItems-columnItems-2-formComponent-field","e":"change","c":"id5d","ad":true,"m":"POST"});;
-Wicket.Ajax.ajax({"u":"./?0-2.IBehaviorListener.0-searchFormPanel-searchFormPanel-searchForm-formComponents-formSections-4-formSection-columns-1-formItems-columnItems-1-formComponent-choice","e":"click","c":"id5e","pre":[function(attrs){return Wicket.Choice.acceptInput('formComponents:formSections:4:formSection:columns:1:formItems:columnItems:1:formComponent:choice', attrs)}],"ad":true,"m":"POST","dep":[function(attrs){return Wicket.Choice.getInputValues('formComponents:formSections:4:formSection:columns:1:formItems:columnItems:1:formComponent:choice', attrs)}]});;
-var self = new elements['CheckBoxGroup'](document.getElementById('id5e'));;
-Wicket.Ajax.ajax({"u":"./?0-2.IBehaviorListener.0-searchFormPanel-searchFormPanel-searchForm-formComponents-formSections-4-formSection-columns-1-formItems-columnItems-2-formComponent-choice","e":"click","c":"id5f","pre":[function(attrs){return Wicket.Choice.acceptInput('formComponents:formSections:4:formSection:columns:1:formItems:columnItems:2:formComponent:choice', attrs)}],"ad":true,"m":"POST","dep":[function(attrs){return Wicket.Choice.getInputValues('formComponents:formSections:4:formSection:columns:1:formItems:columnItems:2:formComponent:choice', attrs)}]});;
-var self = new elements['CheckBoxGroup'](document.getElementById('id5f'));;
-var self = new elements['Text'](document.getElementById('id60'));self.setDefault('min');self.onLeave();;
-Wicket.Ajax.ajax({"u":"./?0-2.IBehaviorListener.0-searchFormPanel-searchFormPanel-searchForm-formComponents-formSections-4-formSection-columns-1-formItems-columnItems-3-formComponent-begin","e":"change","c":"id60","ad":true,"m":"POST"});;
-var self = new elements['Text'](document.getElementById('id61'));self.setDefault('max');self.onLeave();;
-Wicket.Ajax.ajax({"u":"./?0-2.IBehaviorListener.0-searchFormPanel-searchFormPanel-searchForm-formComponents-formSections-4-formSection-columns-1-formItems-columnItems-3-formComponent-maxFieldContainer-end","e":"change","c":"id61","ad":true,"m":"POST"});;
-var self = new elements['Text'](document.getElementById('id62'));self.setDefault('min');self.onLeave();;
-Wicket.Ajax.ajax({"u":"./?0-2.IBehaviorListener.0-searchFormPanel-searchFormPanel-searchForm-formComponents-formSections-4-formSection-columns-1-formItems-columnItems-4-formComponent-begin","e":"change","c":"id62","ad":true,"m":"POST"});;
-var self = new elements['Text'](document.getElementById('id63'));self.setDefault('max');self.onLeave();;
-Wicket.Ajax.ajax({"u":"./?0-2.IBehaviorListener.0-searchFormPanel-searchFormPanel-searchForm-formComponents-formSections-4-formSection-columns-1-formItems-columnItems-4-formComponent-maxFieldContainer-end","e":"change","c":"id63","ad":true,"m":"POST"});;
-$('#id18').hide();;
-Wicket.Ajax.ajax({"u":"./?0-2.IBehaviorListener.0-searchFormPanel-searchFormPanel-searchForm-formComponents-toggleExtraFields","e":"click","c":"id19"});;
-Wicket.Ajax.ajax({"u":"./?0-2.IBehaviorListener.0-searchFormPanel-showResultsButton","e":"click","c":"show-results-button","bh":[function(attrs){jokakoti.search.scrollToSearchResults(true);}]});;
-Wicket.Ajax.ajax({"u":"./?0-2.IBehaviorListener.0-searchFormPanel-searchLinks-1-link","e":"click","c":"id64","bsh":[function(attrs, jqXHR, settings){showBusyIndicatorAndHideSearchForm();}]});;
-jokakoti.map.initSearchMap('FINLAND',{"searchLocations" : [],"zoomToRealEstates" : false});;
-dataLayer.push({'event' : 'haku','ilmoitustyyppi' : 'myytava','asuntotyyppi' : 'maatila','results' : '437','talotyyppi' : 'Maatila|Metsätila|Peltoalue/tila'});;
-jokakoti.search.list.init({"page":1,"tryToInitSearchFromHistory":false,"showAds":true,"appendSortToUrl":false});;
-Wicket.Ajax.ajax({"u":"./?0-2.IBehaviorListener.0-","e":"mock-event"});;
-Wicket.Event.publish(Wicket.Event.Topic.AJAX_HANDLERS_BOUND);
-;});
-/*]]>*/
-</script>
-</head>
-<body id="root" class="page wide front-page">
-<!-- Google Tag Manager -->
-<noscript>
-<iframe height="0" width="0" style="display:none;visibility:hidden" src="//www.googletagmanager.com/ns.html?id=GTM-NNWDBS">
-</iframe>
-</noscript>
-<script>(function(w,d,s,l,i){
-	w[l]=w[l]||[];
-	w[l].push({'gtm.start': new Date().getTime(),event:'gtm.js'});
-	var f=d.getElementsByTagName(s)[0], j=d.createElement(s),dl=l!='dataLayer'?'&l='+l:'';
-	j.async=true;
-	j.src='//www.googletagmanager.com/gtm.js?id='+i+dl;
-	f.parentNode.insertBefore(j,f);
-})(window,document,'script','dataLayer','GTM-NNWDBS');</script>
-<!-- End Google Tag Manager -->
-<!-- Facebook -->
-<div id="fb-root"></div>
-<script>
-/*<![CDATA[*/
-
-window.fbAsyncInit = jokakoti.session.createFbAsyncInitFunction();
-// Load the SDK asynchronously
-(function (d, s, id) {
-var js, fjs = d.getElementsByTagName(s)[0];
-if (d.getElementById(id)) {
-return;
-}
-js = d.createElement(s);
-js.id = id;
-js.async = true;
-js.type = "text/javascript";
-js.src = "//connect.facebook.net/fi_FI/sdk.js";
-fjs.parentNode.insertBefore(js, fjs);
-}(document, 'script', 'facebook-jssdk'));
-
-/*]]>*/
-</script>
-<!-- End Facebook -->
-<noscript>
-<div style="background-color:#333; position:fixed; top:0; left:0; right:0; bottom:0; z-index:10000;">
-<p style="font-size:30px; color:#fff; text-align:center; line-height: 1.5;width: 100%;position: absolute;top: 50%;left: 50%;margin-right: 50%;transform: translate(-50%,-50%);">
-<span style="display:block; font-size:80px; font-weight:900;">Jokakoti.fi</span>
-Palvelun käyttö vaatii JavaScript-ominaisuuden sallimisen selaimessa
-</p>
-</div>
-</noscript>
-
-
-<!-- SITE MAIN -->
-<div id="main" class="main">
-<div class="banner wallpaper" id="div-gpt-ad-1417007444516-0">
-<script type="text/javascript">$(window).load(function() {googletag.cmd.push(function() { googletag.display('div-gpt-ad-1417007444516-0');});});</script>
-</div>
-<div class="banner panoraama" id="div-gpt-ad-1417007444516-3">
-<script type="text/javascript">$(window).load(function() {googletag.cmd.push(function() { googletag.display('div-gpt-ad-1417007444516-3');});});</script>
-</div>
-
-<div class="main-inner">
-<header id="site-header">
-<div class="main-navi-panel">
-<div class="mobile-component menu-icon">
-<a href="#" class="open-mobile-navi">
-<div class="bar-line"></div>
-<div class="bar-line"></div>
-<div class="bar-line"></div>
-</a>
-</div>
-<div class="branding"><a href="/"><img src="/wicket/new-img/logo-jokakoti-nega.png" alt="Jokakoti.fi" /></a></div>
-<nav class="desktop-component">
-<ul>
-<li>
-<a href="./" class="selected">Kohteet</a>
-</li><li>
-<a href="./ilmoita">Ilmoita asunto</a>
-</li><li>
-<a href="http://blog.jokakoti.fi">Blogi</a>
-</li><li>
-<a href="./yritykset">Löydä välittäjäsi</a>
-</li>
-</ul>
-</nav>
-<div class="page-login-controls" id="id1c">
-
-<div class="login-controls">
-<a class="link login" id="id1d">
-<img class="mobile-icon mobile-component" src="/wicket/img/avatar_default.png" alt="avatar">
-Kirjaudu
-</a>
-</div>
-
-</div>
-<div class="logged-in-user-panel" style="display:none;">
-<div class="logged-in-user-navi">
-<div class="avatar-container">
-<img class="avatar" alt="Profiilikuva" src="/wicket/img/avatar_default.png"/>
-</div>
-<div class="user-name-container desktop-component">
-<a href="./kayttaja/profiili"><span class="first-name"></span><span class="last-name"></span></a>
-</div>
-<div class="menu-open-container">
-<a href="#" class="open-user-menu"></a>
-</div>
-</div>
-</div>
-</div>
-<div class="sub-navi-panel clearfix">
-<nav class="mobile-component">
-<ul class="navi">
-<li>
-<a href="./" class="selected">Kohteet</a>
-</li><li>
-<a href="./ilmoita">Ilmoita asunto</a>
-</li><li>
-<a href="http://blog.jokakoti.fi">Blogi</a>
-</li><li>
-<a href="./yritykset">Löydä välittäjäsi</a>
-</li>
-</ul>
-</nav>
-<div class="login-dialog">
-<div id="login-content">
-
-<div class="login-fb">
-<a class="facebook-login-link" onclick="jokakoti.session.fbLogin();">
-Käytä Jokakotia Facebook-tunnuksillasi
-</a>
-</div>
-<div class="login-separator">
-<h3>tai</h3>
-</div>
-
-<div class="login-jkti">
-<h3>Kirjaudu sähköpostilla</h3>
-<div id="drop-down-login">
-<form class="login-form no-labels" id="login-form-dialog" method="post" action="./?0-2.IFormSubmitListener-siteHeader-commonLogin-loginForm-loginForm"><div style="width:0px;height:0px;position:absolute;left:-100px;top:-100px;overflow:hidden"><input type="hidden" name="login-form-dialog_hf_0" id="login-form-dialog_hf_0" /></div>
-<div class="feedbackPanel" id="id1e">
-
-</div>
-<ul class="fields">
-<li>
-<div class="form-component is-required">
-<label id="id1f-w-lbl" for="id1f" class="required">
-Sähköposti
-</label>
-<div class="input-wrapper">
-<input type="email" onfocus="jokakoti.formComponents.onFocus.apply(this)" onblur="jokakoti.formComponents.onBlur.apply(this)" value="" name="username:inputWrapper:input" id="id1f" placeholder="Sähköposti"/>
-<div class="feedback-icon">
-<span class="icon"></span>
-</div>
-</div>
-<div class="message-wrapper">
-<span></span>
-</div>
-
-
-
-
-
-
-</div>
-</li>
-<li>
-<div class="form-component is-required">
-<label id="id20-w-lbl" for="id20" class="required">
-Salasana
-</label>
-<div class="input-wrapper">
-<input type="password" onfocus="jokakoti.formComponents.onFocusa.apply(this)" onblur="jokakoti.formComponents.onBlur.apply(this)" value="" name="password:inputWrapper:input" id="id20" placeholder="Salasana"/>
-<div class="feedback-icon">
-<span class="icon"></span>
-</div>
-</div>
-<div class="message-wrapper">
-<span></span>
-</div>
-
-
-
-
-
-
-</div>
-</li>
-</ul>
-<div class="controls">
-<button class="submit button" id="id1">Kirjaudu</button>
-</div>
-</form>
-</div>
-<ul class="login-links">
-<li><a href="./unohtunut_salasana">Unohditko salasanan?</a></li>
-<li>
-<a href="./rekisteroidy" class="desktop-component">Rekisteröidy</a>
-<a href="javascript:jokakoti.page.toggleMobileRegistrationForm()" class="mobile-component">Rekisteröidy</a>
-</li>
-</ul>
-</div>
-</div>
-<div id="mobile-registration">
-
-<div class="login-fb">
-<a class="facebook-login-link" onclick="jokakoti.session.fbLogin();">
-Käytä Jokakotia Facebook-tunnuksillasi
-</a>
-</div>
-<div class="login-separator">
-<h3>tai</h3>
-</div>
-
-<h3>Rekisteröidy sähköpostiosoitteellasi</h3>
-<div id="mobile-registration-form">
-<form class="registration-form" autocomplete="off" id="registration-form-mobile" method="post" action="./?0-2.IFormSubmitListener-siteHeader-commonLogin-mobileRegistrationForm-form"><div style="width:0px;height:0px;position:absolute;left:-100px;top:-100px;overflow:hidden"><input type="hidden" name="registration-form-mobile_hf_0" id="registration-form-mobile_hf_0" /></div>
-<ul class="name-fields">
-<li>
-<div class="form-component is-required">
-<label id="id21-w-lbl" for="id21" class="required">
-Etunimi
-</label>
-<div class="input-wrapper">
-<input type="text" onfocus="jokakoti.formComponents.onFocus.apply(this)" onblur="jokakoti.formComponents.onBlur.apply(this)" value="" name="firstName:inputWrapper:input" id="id21"/>
-<div class="feedback-icon">
-<span class="icon"></span>
-</div>
-</div>
-<div class="message-wrapper">
-<span></span>
-</div>
-
-
-
-
-
-
-</div>
-<div class="form-component is-required">
-<label id="id22-w-lbl" for="id22" class="required">
-Sukunimi
-</label>
-<div class="input-wrapper">
-<input type="text" onfocus="jokakoti.formComponents.onFocus.apply(this)" onblur="jokakoti.formComponents.onBlur.apply(this)" value="" name="lastName:inputWrapper:input" id="id22"/>
-<div class="feedback-icon">
-<span class="icon"></span>
-</div>
-</div>
-<div class="message-wrapper">
-<span></span>
-</div>
-
-
-
-
-
-
-</div>
-</li>
-</ul>
-<ul class="account-fields">
-<li>
-<div class="form-component is-required">
-<label id="id23-w-lbl" for="id23" class="required">
-Sähköposti
-</label>
-<div class="input-wrapper">
-<input type="email" onfocus="jokakoti.formComponents.onFocus.apply(this)" onblur="jokakoti.formComponents.onBlur.apply(this)" value="" name="email:inputWrapper:input" id="id23"/>
-<div class="feedback-icon">
-<span class="icon"></span>
-</div>
-</div>
-<div class="message-wrapper">
-<span></span>
-</div>
-
-
-
-
-
-
-</div>
-</li>
-<li>
-<div class="form-component is-required">
-<label id="id24-w-lbl" for="id24" class="required">
-Salasana
-</label>
-<div class="input-wrapper">
-<input type="password" onfocus="jokakoti.formComponents.onFocusa.apply(this)" onblur="jokakoti.formComponents.onBlur.apply(this)" value="" name="password:inputWrapper:input" id="id24"/>
-<div class="feedback-icon">
-<span class="icon"></span>
-</div>
-</div>
-<div class="message-wrapper">
-<span></span>
-</div>
-
-
-
-
-
-
-</div>
-</li>
-</ul>
-<ul id="id2">
-<li>
-<label id="id25-w-lbl" for="id25">Salli markkinointi</label>
-<input type="checkbox" name="marketingInfoAllowed" id="id25">
-</li>
-<li>
-<label id="id26-w-lbl" for="id26">Osoite</label>
-<input type="text" value="" name="address" id="id26">
-</li>
-</ul>
-<div class="controls">
-<button class="submit button" id="id3">Rekisteröidy</button>
-</div>
-<ul class="registration-feedback">
-
-</ul>
-</form>
-</div>
-<ul class="login-links">
-<li>Onko sinulla jo käyttäjätili?&nbsp;<a href="javascript:jokakoti.page.toggleMobileRegistrationForm()">Kirjaudu</a></li>
-</ul>
-</div>
-</div>
-<div class="user-menu">
-<ul>
-<li><a href="./kayttaja/profiili">Käyttäjätili</a></li><li><a href="./kayttaja/hakuvahdit">Hakuvahdit</a></li><li><a href="./kayttaja/ilmoitukset">Ilmoitukset</a></li><li><a href="./kayttaja/uutiskirje">Uutiskirje</a></li>
-
-<li class="logout"><a href="#" onclick="jokakoti.session.logout();return false">Kirjaudu ulos</a></li>
-</ul>
-</div>
-</div>
-</header>
-<div class="page-level-feedback empty" id="id27">
-
-</div>
-<!-- MIDDLE -->
-<section id="site-middle" class="site-middle">
-
-<aside class="sidebar">
-<div class="sidebar-inner"> </div>
-</aside>
-<section class="site-middle-content">
-<div class="site-middle-content-inner">
-
-<div class="search-content-container" id="id28">
-
-<div class="search-box">
-<div class="inner">
-<ul class="dialog-links">
-<li class="search-history dialog-launch-panel" id="id29">
-<div class="button-simple" id="id6"><span>Aiemmat haut</span></div>
-<div class="dialog" id="id5">
-<div id="id4">
-<div class="search-history-panel">
-<div class="section-content">
-<ul class="summary-list">
-</ul>
-<div class="empty-content" style="display:none;">Aiempia hakuja ei löytynyt</div>
-<div class="template" style="display:none;">
-<a href="javascript:;" class="link">
-<span class="title">&nbsp;</span>
-</a>
-<a href="javascript:;" class="row-delete"></a>
-</div>
-</div>
-</div>
-</div>
-<span class="pointer"></span>
-</div>
-</li>
-<li class="real-estate-id-search dialog-launch-panel" id="id2a">
-<div class="button-simple" id="idb"><span>Kohdenumero</span></div>
-<div class="dialog" id="ida">
-<div>
-<header>
-<h3>Siirry kohteeseen</h3>
-</header>
-<div>
-<form id="id9" method="post" action="./?0-2.IFormSubmitListener-searchFormPanel-realEstateIdSearchDialogLink-dialogContainer-dialog-searchForm"><div style="width:0px;height:0px;position:absolute;left:-100px;top:-100px;overflow:hidden"><input type="hidden" name="id9_hf_0" id="id9_hf_0" /></div>
-<input name="searchField" type="text" value="" id="id7"/>
-<input type="submit" class="button search no-text" value="" name="submitButton" id="id8"/>
-</form>
-</div>
-</div>
-<span class="pointer"></span>
-</div>
-</li>
-</ul>
-
-<div id="search-form-container" ></div>
-<div data-elementtype="moved" data-container="#search-form-container" id="main_search_form" style="display: none;">
-<!-- The content of this div is hidden while loading, and it is then moved to "search_container"
-In this way, all the bling-bling added by JQuery gets done and user doesn't see the search form before it is ready -->
-<!-- Hakulomake -->
-<form id="id2b" method="post" action="./?0-2.IFormSubmitListener-searchFormPanel-searchFormPanel-searchForm"><div style="width:0px;height:0px;position:absolute;left:-100px;top:-100px;overflow:hidden"><input type="hidden" name="id2b_hf_0" id="id2b_hf_0" /></div>
-<div id="id2c">
-<ul class="default fields">
-<li>
-
-
-<div class="search-form-item procurement_type">
-
-<div class="search-form-component">
-<select name="formComponents:formSections:0:formSection:itemsPanel:columnItems:1:formComponent:select" id="id58" class="inline-menu">
-<option selected="selected" value="FOR_SALE">Myytävä</option>
-<option value="FOR_RENT">Vuokrattava</option>
-</select>
-</div>
-</div>
-
-
-</li><li>
-
-
-<div class="search-form-item real_estate_category">
-
-<div class="search-form-component">
-<select name="formComponents:formSections:1:formSection:itemsPanel:columnItems:1:formComponent:select" id="id59" class="inline-menu">
-<option value="APARTMENTS">asunto</option>
-<option value="HOLIDAY_APARTMENTS">loma-asunto</option>
-<option value="PROPERTIES">tontti</option>
-<option selected="selected" value="FARM_AND_FOREST_PROPERTIES">maa- tai metsätila</option>
-<option value="BUSINESS_PREMISES">toimitila</option>
-<option value="OTHERS">muut</option>
-</select>
-</div>
-</div>
-
-
-</li><li>
-
-
-
-
-
-</li><li>
-
-
-
-
-
-</li><li>
-
-<ul class="cols">
-<li class="column col-1">
-
-<div class="search-form-item area_selection">
-<h3>Alue:</h3>
-<div class="search-form-component">
-<div class="area-selection-container">
-<div class="area-selection-container-inner">
-<select name="formComponents:formSections:4:formSection:columns:0:formItems:columnItems:1:formComponent:areaTypeSelection" id="id5a" size="8" class="inline-menu">
-<option selected="selected" value="FINNISH">Suomessa</option>
-<option value="FOREIGN">Ulkomailla</option>
-</select>
-</div>
-</div>
-<div class="formitem-tagger">
-<input type="text" class="formitem-tagger-input" value="" name="formComponents:formSections:4:formSection:columns:0:formItems:columnItems:1:formComponent:textInput" id="id5b" data-url="/ws/rs/locations/findFinnishLocations/"/>
-<select class="geolocationsSelect" style="display:none;" multiple="multiple" name="formComponents:formSections:4:formSection:columns:0:formItems:columnItems:1:formComponent:locations" id="id5c" size="0">
-</select>
-</div>
-</div>
-</div><div class="search-form-item keyword_search">
-<h3>Avainsanat</h3>
-<div class="search-form-component">
-<div id="id65">
-
-</div>
-<input type="text" class="field-wide" value="" name="formComponents:formSections:4:formSection:columns:0:formItems:columnItems:2:formComponent:field" id="id5d" maxLength="100"/>
-</div>
-</div>
-
-</li><li class="column col-2">
-
-<div class="search-form-item real_estate_type_farm_and_forest">
-<h3>Maa- ja metsätilatyyppi</h3>
-<div class="search-form-component">
-<span id="id5e" class="option-list horizontal"><input name="formComponents:formSections:4:formSection:columns:1:formItems:columnItems:1:formComponent:choice" type="checkbox" value="FARM_HOUSE" id="id5e-formComponents:formSections:4:formSection:columns:1:formItems:columnItems:1:formComponent:choice_FARM_HOUSE"/><label for="id5e-formComponents:formSections:4:formSection:columns:1:formItems:columnItems:1:formComponent:choice_FARM_HOUSE">Maatila</label><br/>
-<input name="formComponents:formSections:4:formSection:columns:1:formItems:columnItems:1:formComponent:choice" type="checkbox" value="FOREST_PROPERTY" id="id5e-formComponents:formSections:4:formSection:columns:1:formItems:columnItems:1:formComponent:choice_FOREST_PROPERTY"/><label for="id5e-formComponents:formSections:4:formSection:columns:1:formItems:columnItems:1:formComponent:choice_FOREST_PROPERTY">Metsätila</label><br/>
-<input name="formComponents:formSections:4:formSection:columns:1:formItems:columnItems:1:formComponent:choice" type="checkbox" value="FIELD" id="id5e-formComponents:formSections:4:formSection:columns:1:formItems:columnItems:1:formComponent:choice_FIELD"/><label for="id5e-formComponents:formSections:4:formSection:columns:1:formItems:columnItems:1:formComponent:choice_FIELD">Peltotila</label><br/>
-</span>
-</div>
-</div><div class="search-form-item room_count">
-<h3>Huoneita</h3>
-<div class="search-form-component">
-<span id="id5f" class="option-list horizontal"><input name="formComponents:formSections:4:formSection:columns:1:formItems:columnItems:2:formComponent:choice" type="checkbox" value="ONE" id="id5f-formComponents:formSections:4:formSection:columns:1:formItems:columnItems:2:formComponent:choice_ONE"/><label for="id5f-formComponents:formSections:4:formSection:columns:1:formItems:columnItems:2:formComponent:choice_ONE">1</label><br/>
-<input name="formComponents:formSections:4:formSection:columns:1:formItems:columnItems:2:formComponent:choice" type="checkbox" value="TWO" id="id5f-formComponents:formSections:4:formSection:columns:1:formItems:columnItems:2:formComponent:choice_TWO"/><label for="id5f-formComponents:formSections:4:formSection:columns:1:formItems:columnItems:2:formComponent:choice_TWO">2</label><br/>
-<input name="formComponents:formSections:4:formSection:columns:1:formItems:columnItems:2:formComponent:choice" type="checkbox" value="THREE" id="id5f-formComponents:formSections:4:formSection:columns:1:formItems:columnItems:2:formComponent:choice_THREE"/><label for="id5f-formComponents:formSections:4:formSection:columns:1:formItems:columnItems:2:formComponent:choice_THREE">3</label><br/>
-<input name="formComponents:formSections:4:formSection:columns:1:formItems:columnItems:2:formComponent:choice" type="checkbox" value="FOUR" id="id5f-formComponents:formSections:4:formSection:columns:1:formItems:columnItems:2:formComponent:choice_FOUR"/><label for="id5f-formComponents:formSections:4:formSection:columns:1:formItems:columnItems:2:formComponent:choice_FOUR">4</label><br/>
-<input name="formComponents:formSections:4:formSection:columns:1:formItems:columnItems:2:formComponent:choice" type="checkbox" value="FIVE_OR_MORE" id="id5f-formComponents:formSections:4:formSection:columns:1:formItems:columnItems:2:formComponent:choice_FIVE_OR_MORE"/><label for="id5f-formComponents:formSections:4:formSection:columns:1:formItems:columnItems:2:formComponent:choice_FIVE_OR_MORE">5+</label><br/>
-</span>
-</div>
-</div><div class="search-form-item building_surface_area">
-<h3>Pinta-ala</h3>
-<div class="search-form-component">
-<ul class="option-list horizontal">
-<li>
-<input type="text" class="interval input field-short" value="" name="formComponents:formSections:4:formSection:columns:1:formItems:columnItems:3:formComponent:begin" id="id60"/>
-</li>
-<li>
-<span class="dasher">-</span>
-</li>
-<li>
-<input type="text" class="interval input field-short" value="" name="formComponents:formSections:4:formSection:columns:1:formItems:columnItems:3:formComponent:maxFieldContainer:end" id="id61"/>
-</li>
-<li>
-<span class="unit">m²</span>
-</li>
-</ul>
-</div>
-</div><div class="search-form-item sales_price">
-<h3>Hinta</h3>
-<div class="search-form-component">
-<ul class="option-list horizontal">
-<li>
-<input type="text" class="interval input field-short" value="" name="formComponents:formSections:4:formSection:columns:1:formItems:columnItems:4:formComponent:begin" id="id62"/>
-</li>
-<li>
-<span class="dasher">-</span>
-</li>
-<li>
-<input type="text" class="interval input field-short" value="" name="formComponents:formSections:4:formSection:columns:1:formItems:columnItems:4:formComponent:maxFieldContainer:end" id="id63"/>
-</li>
-<li>
-<span class="unit">000 €</span>
-</li>
-</ul>
-</div>
-</div>
-
-</li>
-</ul>
-
-</li>
-</ul>
-<div class="extra fields">
-<ul class="extra-fields-container" id="id18">
-
-</ul>
-</div>
-<div class="toggle-search">
-<a class="toggler closed" href="javascript:;" id="id19">enemmän hakuehtoja</a>
-</div>
-</div>
-</form>
-</div>
-
-<ul class="search-buttons">
-<li>
-<div id="show-results-button" class="button search">Näytä kohteet (437)</div>
-</li>
-<li>
-<a class="button-simple" href="./tallenna-hakuvahdiksi">Tallenna hakuvahdiksi</a>
-</li><li>
-<a class="button-simple" id="id64" href="javascript:;">Tyhjennä</a>
-</li>
-</ul>
-</div>
-</div>
-<div class="result-view-container">
-<div id="mapcontainer" class="search-map desktop-component">
-
-<div id="suurenna" class="widerMapSizeLink" style=""><a href="#" id="levennysLinkki" class="olControlZoom olButton" onclick="jokakoti.map.toggleSize();return false;" style="left: 10px;">
-<span class="toggleSizeText large">Suurenna kartta</span>
-<span class="toggleSizeText small">Pienennä kartta</span>
-</a></div>
-<a href="#" onclick="jokakoti.map.toggleView('AERIAL');return false;" class="layerButtonsLink AERIAL">Ilmakuva</a>
-<a href="#" onclick="jokakoti.map.toggleView('ESTATE_BORDERS');return false;" class="layerButtonsLink ESTATE_BORDERS">Kiinteistörajat</a>
-
-<div id="map" class="mapWrapper"></div>
-</div>
-<div class="list-header">
-<div class="result-view-sorting" id="id2e">
-<div class="mobile-component">
-<a href="#" id="toggle-sorting-links" class="buttons-simple" onclick="$('#sorting-links').slideToggle('fast'); return false;">
-Järjestä tulokset
-</a>
-</div>
-<ul id="sorting-links" class="desktop-component">
-<li class="sort asc desc selected DESCENDING" data-name="publish_date">
-<a href="#" onclick="jokakoti.search.list.onSortLinkClick(this); return false;">
-<span class="label">julkaisupäivä</span>
-<span class="asc-label"></span>
-<span class="desc-label"></span>
-</a>
-</li><li class="sort asc desc" data-name="area">
-<a href="#" onclick="jokakoti.search.list.onSortLinkClick(this); return false;">
-<span class="label">pinta-ala</span>
-<span class="asc-label"></span>
-<span class="desc-label"></span>
-</a>
-</li><li class="sort asc desc" data-name="price">
-<a href="#" onclick="jokakoti.search.list.onSortLinkClick(this); return false;">
-<span class="label">hinta</span>
-<span class="asc-label"></span>
-<span class="desc-label"></span>
-</a>
-</li><li class="sort asc desc" data-name="year_of_construction">
-<a href="#" onclick="jokakoti.search.list.onSortLinkClick(this); return false;">
-<span class="label">rakennusvuosi</span>
-<span class="asc-label"></span>
-<span class="desc-label"></span>
-</a>
-</li><li class="sort asc" data-name="next_showingtime">
-<a href="#" onclick="jokakoti.search.list.onSortLinkClick(this); return false;">
-<span class="label">esittelyssä</span>
-<span class="asc-label"></span>
-<span class="desc-label"></span>
-</a>
-</li>
-</ul>
-</div>
-</div>
-
-<div class="less">
-<div class="button-area">
-Näytä aiemmat kohteet...
-</div>
-</div>
-<div id="result-list" class="search-result">
-</div>
-<div class="no-results">
-Hakuehdoilla ei löytynyt yhtään kohdetta
-</div>
-<div class="more">
-<div class="button-area">
-<span>Näytä lisää kohteita...</span>
-<div class="counter">
-<span class="to-go">40000</span> kohdetta jäljellä.
-</div>
-</div>
-<div class="results-hint" style="display: none;">
-<p>
-Kaikki hakuehtoihin täsmäävät kohteet esillä
-</p>
-</div>
-<div class="actions">
-<div class="button-simple edit-search">
-Muokkaa hakua
-</div>
-<a href="/tallenna-hakuvahdiksi" class="button-simple">
-Etkö löytänyt vielä etsimääsi? Tee hakuvahti
-</a>
-</div>
-</div>
-<div class="list-item template" style="display:none;">
-<a href="#" class="listing-link">
-<div class="listing-picture">
-<picture class="listing-picture-image">
-<!--[if IE 9]><video style="display: none;"><![endif]-->
-<source srcset="" media="(max-width: 768px)">
-<!--[if IE 9]></video><![endif]-->
-<img srcset=""></picture>
-<div class="bid-icon"></div>
-</div>
-<div class="listing-info">
-<div class="listing-info-header info-item">
-<h2>
-<span class="price"></span>
-<span class="area"></span>
-<span class="year"></span>
-</h2>
-</div>
-<h3 class="info-item">
-<span class="realEstateType"></span>
-&nbsp;
-<span class="roomTypes"></span>
-</h3>
-<h4 class="info-item location"></h4>
-<p class="description info-item"></p>
-</div>
-<div class="agency-info">
-<span class="privateSellerLabel"></span>
-</div>
-<div class="footer">
-<div class="content">
-<span class="showingTimes"></span>
-<span class="bidOfferLabel"></span>
-</div>
-</div>
-</a>
-</div>
-
-<div class="floating-summary">
-<div class="inner" id="id2f">
-<ul class="summary-items">
-<li>
-<div class="button search" id="edit-search-button"><span>Muokkaa hakua (437)</span></div>
-</li>
-<li class="summary-text desktop-component">
-<strong><span title="Myytävät maa- ja metsätilat">Myytävät maa- ja metsätilat</span></strong>
-</li>
-</ul>
-</div>
-</div>
-</div>
-</div>
-
-</div>
-</section>
-
-
-<div class="banner jattiboksi" id="div-gpt-ad-1417007444516-4">
-<script type="text/javascript">$(window).load(function() {googletag.cmd.push(function() { googletag.display('div-gpt-ad-1417007444516-4');});});</script>
-</div>
-</section>
-<!-- FOOTER -->
-
-
-<footer id="sitefooter" class="sitefooter">
-<section class="left info-text">
-<h3 class="footer-title logo-only">&nbsp;</h3>
-<p>Maan johtavat kiinteistönvälittäjät: Aktia, HUOM!,
-Huoneistokeskus, Kiinteistömaailma, OPKK, SKV-Kiinteistönvälitys
-ja yli neljän sadan paikallisen yrittäjän muodostama Suomen
-Kiinteistönvälittäjäliitto (SKVL) sekä MTV Sisällöt Oy omistavat yhdessä
-Jokakoti.fi-palvelun.</p>
-</section>
-<section class="left">
-<h3 class="footer-title">Lisätietoa</h3>
-<ul>
-<li><a href="/info">Yhteystiedot »</a></li>
-<li><a href="/info/mainostajat">Mainostajalle »</a></li>
-<li><a href="/lehti">Jokakoti-lehti »</a></li>
-</ul>
-</section>
-<section class="left customer-service">
-<h3 class="footer-title">Asiakaspalvelu</h3>
-<p>
-puh. 02900 11211<br/>
-<a href="mailto:asiakaspalvelu@jokakoti.fi">asiakaspalvelu@jokakoti.fi</a>
-</p>
-<ul>
-<li><a href="/info">Asiakaspalvelu »</a></li>
-<li><a href="/kayttoehdot">Käyttöehdot »</a></li>
-</ul>
-</section>
-</footer>
-<div>
-</div>
-
-</div>
-</div>
-<div>
-<script type="text/javascript" src="/wicket/js/tns/spring.js"></script>
-<script type="text/javascript">
-/*<![CDATA[*/
-
-var sp_e0 = {
-"s": "jokakoti",
-"cp": "aggregate",
-"url": document.location.href
-};
-spring.c(sp_e0);
-
-/*]]>*/
-</script>
-<noscript><img src="http://jokakoti.spring-tns.net/j0=,,,;+,,cp=aggregate;;;;" alt=""></noscript>
-</div>
-
-</body>
+<!DOCTYPE html>
+<html lang="en-us">
+  <head>
+
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <meta name="apple-mobile-web-app-cabaple" content="yes"> 
+
+    <title>Liikuntapaikat kartalla</title>
+
+    <!-- Bootstrap scriptit -->
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.3/jquery.min.js"></script>
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.5/css/bootstrap.min.css">
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.5/js/bootstrap.min.js"></script>
+
+    <!-- OpenLayers scriptit -->
+    <script src="http://openlayers.org/en/v3.11.1/build/ol.js"></script>
+    <link rel="stylesheet" href="http://openlayers.org/en/v3.11.1/css/ol.css" type="text/css">
+
+    <!-- Sivun CSS -->
+    <link rel="stylesheet" href="cssfile.css">
+
+  </head>
+
+  <body onload="init()">	
+			
+    <!-- Toiminnallisuus script -->    
+    <script type="text/javascript" src="main.js"></script> 
+
+    <!-- Sivupalkin piilotus -->
+    <script>
+      function toggleControlPanel(){
+        var sidebar = document.getElementById("sidebar");
+        if (sidebar.style.display == "none") {
+          sidebar.style.display = "block";
+        }
+        else {
+          sidebar.style.display = "none";
+        }
+      }
+    </script>
+
+
+    <!-- Header osio, johon tulee otsikko ja ehka joki valikko -->
+    <div class="container">
+   	<div id="header">
+    	  <h1><span>Liikuntapaikat</span> <span>kartalla</span></h1>
+       
+  	  <div class="ol-toggle-options">  
+	   <button class="btn btn-primary" title="Sivupalkki" onClick="toggleControlPanel()" href="#toggle">Valikko</button>   
+    	  </div>
+	</div>
+   </div> 
+    
+
+    <div id='sidebar' class='sidebar' style="display:">
+            
+    	<button class="btn btn-primary" title="Sivupalkki" onClick="toggleControlPanel()" href="#toggle">Sulje valikko</button>   
+	<br><br>  	
+   
+	<!--Filtteröinti valikko wfs-->
+	Näytettävät kohteet:
+	<select id="filtering_wfs" onchange="update()">
+          <option value="">Kaikki kohteet</option>
+	  <option value="AND(tyyppikoodi=2120)">Kuntosalit</option>
+          <option value="AND(tyyppikoodi BETWEEN 3000 AND 3999)">Uintipaikat</option>
+	  <option value="AND(tyyppikoodi BETWEEN 2200 AND 2299)">Liikuntahallit</option>
+	  <option value="AND(tyyppikoodi BETWEEN 1200 AND 1220)">Yleisurheilu</option> 
+	  <option value="AND(tyyppikoodi BETWEEN 1300 AND 1380)">Pallokentät</option>
+	  <option value="AND(tyyppikoodi BETWEEN 2500 AND 2530)">Jäähallit</option>
+	  <option value="AND(tyyppikoodi BETWEEN 4000 AND 4999)">Maastoliikuntapaikat</option>  
+	  <option value="AND(tyyppikoodi BETWEEN 6000 AND 6220)">Eläinurheilualueet</option>
+        </select>
+
+<br><br>
+
+	<!-- Kohteiden haku -->
+	Etsi liikuntapaikkaa näytettävistä kohteista:
+	<button class="btn btn-primary btn-round" onclick="alert('Valitse Nimi ja kirjoita liikuntpaikan nimi tai osa siitä.\nVaihtoehtoisesti valitse Tyyppi ja kirjoita minkä tyyppiset paikat\nhaluat nähdä, esim. luistelu. Paina lopuksi Etsi.')">i</button>
+	
+	<br>
+
+	<select id="filtering_search">
+          <option value="AND(strToLowerCase(nimi_fi) LIKE ">Nimi</option>
+          <option value="AND(tyyppi_nimi_fi LIKE ">Tyyppi</option>
+        </select>
+        <input type="text" size="15" id="filter"/>
+        <button class="btn btn-primary btn-sm" id="updateFilterButton" href="#" onClick="update()" title="Apply filter">Etsi</button>
+	<button class="btn btn-primary btn-sm" id="resetFilterButton" href="#" onClick="resetFilter()" title="Reset filter">Poista haku</button>
+
+
+	<br><br>
+    	
+	<!-- Paikannukselle nappula, tällä hetkellä asettaa reitinhaun aloitussijainnin -->
+	<button id="track" class="btn btn-primary">Paikanna</button>
+	<button class="btn btn-primary btn-round" onclick="alert('Näyttää nykyisen sijaintisi')">i</button>
+	
+	<br>
+
+	<!-- Painettuna mahdollistaa uuden aloitussijainnin maarittamisen -->
+	<button id="new_start" class="btn btn-primary">Lisää aloitussijainti kartalle</button>
+	<button class="btn btn-primary btn-round" onclick="alert('Lisää aloitussijainti navigoinnille.\nKlikkaa ensin Lisää aloitussijainti ja sitten haluamaasi kohtaa kartalla')">i</button>
+	
+	<br>
+	
+	<!-- Navigoi valittuun kohteeeen -->
+	<button id="navigate" class="btn btn-primary">Navigoi kohteeseen</button>
+	<button class="btn btn-primary btn-round" onclick="alert('Näyttää lyhimmän reitin aloitussijainnin ja valitun kohteen välillä')">i</button>
+	
+	<br>
+
+	<!-- Poista haettu reitti -->
+	<button id="clear" class="btn btn-primary">Poista reitti</button>
+	
+	<br><br>
+
+	<!-- Valitun kohteen tiedot -->
+	<div class="information" id="information">
+	  <em>Klikkaa liikuntakohdetta nähdäksesi sen tiedot</em>
+	  &nbsp;
+	</div>
+
+    </div>
+
+    <!-- Lisaa kartan halutulla koolla -->
+    <div id="map"></div>
+   
+ 
+    <!-- Tahan voidaan laittaa sivun alaosan tietoja, kuten tekijat ja copyright merkinnat -->
+    <div id="footer">
+      <p id="tarkkuus">  GIS Software Development Course</p>
+    </div>
+  
+  </body>
 </html>
+
