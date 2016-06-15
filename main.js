@@ -104,27 +104,8 @@ function init() {
 	});
 
 
-/*	map = new ol.Map({
-	  renderer: "canvas",
-	  controls: ol.control.defaults({
-	    attribution: false
-	  }).extend([
-	    overviewMapControl
-	  ]),
-	  interactions: ol.interaction.defaults().extend([
-	    new ol.interaction.DragRotateAndZoom()
-	  ]),
-	  layers: [
-	    new ol.layer.Tile({
-	    source: new ol.source.OSM()
-	  })],
-	  target: "map",
-	  view: view 
-	});
-*/
-
 var googleLayer = new olgm.layer.Google();
-
+/*
 var osmLayer = new ol.layer.Tile({
   source: new ol.source.OSM(),
   visible: false
@@ -162,14 +143,44 @@ var map = new ol.Map({
   })
 });
 
+*/
+
 var olGM = new olgm.OLGoogleMaps({map: map}); // map is the ol.Map instance
 olGM.activate();
+
 
 
 function toggle() {
   googleLayer.setVisible(!googleLayer.getVisible());
   osmLayer.setVisible(!osmLayer.getVisible());
 };
+
+
+
+
+
+
+	map = new ol.Map({
+	  renderer: "canvas",
+	  controls: ol.control.defaults({
+	    attribution: false
+	  }).extend([
+	    overviewMapControl
+	  ]),
+	  interactions: ol.interaction.defaults().extend([
+	    new ol.interaction.DragRotateAndZoom()
+	  ]),
+	  layers: [
+	    googleLayer,
+	    new ol.layer.Tile({
+	    source: new ol.source.OSM()
+	  })],
+	  target: "map",
+	  view: view 
+	});
+
+
+
 
 
 
