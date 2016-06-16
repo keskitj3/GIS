@@ -15,10 +15,10 @@ html, body { height: 100%; }
       // in case there are no patameters
       var lat = 0;
       var lng = 0;
-      var zoom = 0;
+      var zoom = 17;
       var maptype = google.maps.MapTypeId.ROADMAP;
 var map = null;    
-
+/*
   function MapTypeId2UrlValue(maptype) {
     var urlValue = 'm';
     switch(maptype){
@@ -34,9 +34,9 @@ var map = null;
     }
     return urlValue;
   }
-
+*/
       // ========== This function will create the "link to this page"
-      function makeLink() {
+/*      function makeLink() {
         var a="http://www.geocodezip.com/v3_MW_example_linktothis.html" 
            + "?lat=" + map.getCenter().lat().toFixed(6)
            + "&lng=" + map.getCenter().lng().toFixed(6)
@@ -44,7 +44,7 @@ var map = null;
            + "&type=" + MapTypeId2UrlValue(map.getMapTypeId());
         document.getElementById("link").innerHTML = '<a href="' +a+ '">Link to this page<\/a>';
       }
-
+*/
   function initialize() {
 
       // ========== Read paramaters that have been passed in ==========
@@ -68,33 +68,33 @@ var map = null;
         if (argname == "lat") {lat = parseFloat(value);}
         if (argname == "lng") {lng = parseFloat(value);}
         if (argname == "zoom") {zoom = parseInt(value);}
-        if (argname == "type") {
+        //if (argname == "type") {
 // from the v3 documentation 8/24/2010
 // HYBRID This map type displays a transparent layer of major streets on satellite images. 
 // ROADMAP This map type displays a normal street map. 
 // SATELLITE This map type displays satellite images. 
 // TERRAIN This map type displays maps with physical features such as terrain and vegetation. 
-          if (value == "m") {maptype = google.maps.MapTypeId.ROADMAP;}
+/*          if (value == "m") {maptype = google.maps.MapTypeId.ROADMAP;}
           if (value == "k") {maptype = google.maps.MapTypeId.SATELLITE;}
           if (value == "h") {maptype = google.maps.MapTypeId.HYBRID;}
           if (value == "t") {maptype = google.maps.MapTypeId.TERRAIN;}
-
+*/
         }
       }
 
       // ========== Create the map using the information obtained above ========
     var myOptions = {
-      zoom: zoom,
+//      zoom: zoom,
       center: new google.maps.LatLng(lat,lng),
-      mapTypeId: maptype
+//      mapTypeId: maptype
     }
     map = new google.maps.Map(document.getElementById("map"), myOptions);
 
       // Make the link the first time when the page opens
-      makeLink();
+ //     makeLink();
 
       // Make the link again whenever the map changes
-      google.maps.event.addListener(map, 'maptypeid_changed', makeLink);
+/*      google.maps.event.addListener(map, 'maptypeid_changed', makeLink);
       google.maps.event.addListener(map, 'center_changed', makeLink);
       google.maps.event.addListener(map, 'bounds_changed', makeLink);
       google.maps.event.addListener(map, 'zoom_changed', makeLink);
@@ -107,7 +107,7 @@ var map = null;
     // http://econym.org.uk/gmap/
     // from the v2 tutorial page at:
     // http://econym.org.uk/gmap/example_linktothis.htm
-    //]]>
+*/
     </script>
   </head>
 <body style="margin:0px; padding:0px;" onload="initialize()"> 
