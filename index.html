@@ -67,20 +67,20 @@ var map = null;
         // process each possible argname
         if (argname == "lat") {lat = parseFloat(value);}
         if (argname == "lng") {lng = parseFloat(value);}
-        if (argname == "zoom") {zoom = parseInt(value);}
-        if (argname == "type") {
+ //       if (argname == "zoom") {zoom = parseInt(value);}
+ //       if (argname == "type") {
 // from the v3 documentation 8/24/2010
 // HYBRID This map type displays a transparent layer of major streets on satellite images. 
 // ROADMAP This map type displays a normal street map. 
 // SATELLITE This map type displays satellite images. 
 // TERRAIN This map type displays maps with physical features such as terrain and vegetation. 
-          if (value == "m") {maptype = google.maps.MapTypeId.ROADMAP;}
+/*          if (value == "m") {maptype = google.maps.MapTypeId.ROADMAP;}
           if (value == "k") {maptype = google.maps.MapTypeId.SATELLITE;}
           if (value == "h") {maptype = google.maps.MapTypeId.HYBRID;}
           if (value == "t") {maptype = google.maps.MapTypeId.TERRAIN;}
 
         }
-      }
+*/      }
 
       // ========== Create the map using the information obtained above ========
     var myOptions = {
